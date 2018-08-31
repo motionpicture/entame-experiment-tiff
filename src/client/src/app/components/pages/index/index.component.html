@@ -1,0 +1,32 @@
+<div class="p-3">
+    <div class="px-3 mb-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <div><i class="fas fa-coins mr-2 large-text"></i>エンタメコイン</div>
+            <div class="large-text"><strong>{{ (user | async)?.coinAccounts[0].availableBalance }}pt</strong></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <div><i class="fab fa-product-hunt mr-2 large-text"></i>共通ポイント</div>
+            <div class="large-text"><strong>{{ (user | async)?.pointAccounts[0].availableBalance }}pt</strong></div>
+        </div>
+    </div>
+    <div class="p-3  mb-3 bg-white shadow-sm">
+        <div class="mb-3">
+            <img class="w-25 mx-auto d-block" src="/assets/images/tmp_01.png">
+        </div>
+        <button routerLink="/ticket" type="button" class="btn btn-block btn-primary">チケット購入</button>
+    </div>
+    <div class="p-3 mb-3 bg-white shadow-sm">
+        <div class="mb-3">
+            <img class="w-25 mx-auto d-block" src="/assets/images/tmp_01.png">
+        </div>
+        <button routerLink="/goods" type="button" class="btn btn-block btn-primary">グッズ購入</button>
+    </div>
+    <div class="p-3 bg-white shadow-sm">
+        <div class="mb-3">
+            <img class="w-25 mx-auto d-block" src="/assets/images/tmp_01.png">
+        </div>
+        <button routerLink="/history" type="button" class="btn btn-block btn-primary">購入履歴</button>
+    </div>
+</div>
+
+<app-loading [show]="isLoading | async"></app-loading>
