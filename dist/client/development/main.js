@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
 
 /***/ "../../node_modules/moment/locale sync recursive ^\\.\\/.*$":
-/*!*******************************************************************************************************************************!*\
-  !*** C:/Users/hataguchi/Desktop/workspace/motionpicture/ENTAME/entame-tiff-frontend/node_modules/moment/locale sync ^\.\/.*$ ***!
-  \*******************************************************************************************************************************/
+/*!*********************************************************************************************************************************!*\
+  !*** C:/Users/hataguchi/Desktop/workspace/motionpicture/ENTAME/entame-experiment-tiff/node_modules/moment/locale sync ^\.\/.*$ ***!
+  \*********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -425,6 +425,7 @@ var AppModule = /** @class */ (function () {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"],
                 _modules__WEBPACK_IMPORTED_MODULE_28__["UserModule"],
+                _modules__WEBPACK_IMPORTED_MODULE_28__["PurchaseModule"],
                 _store_core_store__WEBPACK_IMPORTED_MODULE_29__["CoreStoreModule"],
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbModule"].forRoot()
             ],
@@ -1000,7 +1001,7 @@ var ErrorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>商品</div>\n                <div>KING OF PRISM</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>個数</div>\n                <div>1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>エンタメコイン</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用ポイント</div>\n                <div>1000pt</div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" [src]=\"goods.image\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>商品</div>\n                <div>{{ goods.item }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>個数</div>\n                <div>{{ goods.itemLength }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>{{ goods.paymentMethod }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用コイン</div>\n                <div>{{ goods.useCoin }}コイン</div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1026,6 +1027,7 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoodsCompleteComponent", function() { return GoodsCompleteComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_goods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data/goods */ "./src/app/data/goods.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1036,10 +1038,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var GoodsCompleteComponent = /** @class */ (function () {
     function GoodsCompleteComponent() {
     }
     GoodsCompleteComponent.prototype.ngOnInit = function () {
+        this.goods = _data_goods__WEBPACK_IMPORTED_MODULE_1__["goodsInfo"];
     };
     GoodsCompleteComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1063,7 +1067,7 @@ var GoodsCompleteComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>商品</div>\n                <div>KING OF PRISM</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>個数</div>\n                <div>1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>エンタメコイン</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用ポイント</div>\n                <div>1000pt</div>\n            </div>\n        </div>\n        <button routerLink=\"/goods/complete\" type=\"button\" class=\"btn btn-block btn-primary\">購入</button>\n        <button routerLink=\"/goods/qrcode\" type=\"button\" class=\"btn btn-block btn-outline-primary\">戻る</button>\n    </div>\n</div>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" [src]=\"goods.image\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>商品</div>\n                <div>{{ goods.item }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>個数</div>\n                <div>{{ goods.itemLength }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>{{ goods.paymentMethod }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用コイン</div>\n                <div>{{ goods.useCoin }}コイン</div>\n            </div>\n        </div>\n        <button routerLink=\"/goods/complete\" type=\"button\" class=\"btn btn-block btn-primary\">購入</button>\n        <button routerLink=\"/goods/qrcode\" type=\"button\" class=\"btn btn-block btn-outline-primary\">戻る</button>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1089,6 +1093,7 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoodsConfirmComponent", function() { return GoodsConfirmComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_goods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data/goods */ "./src/app/data/goods.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1099,10 +1104,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var GoodsConfirmComponent = /** @class */ (function () {
     function GoodsConfirmComponent() {
     }
     GoodsConfirmComponent.prototype.ngOnInit = function () {
+        this.goods = _data_goods__WEBPACK_IMPORTED_MODULE_1__["goodsInfo"];
     };
     GoodsConfirmComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1189,7 +1196,7 @@ var GoodsQrcodeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>商品</div>\n                <div>KING OF PRISM</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>個数</div>\n                <div>1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>エンタメコイン</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用ポイント</div>\n                <div>1000pt</div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div *ngIf=\"type === 'ticket'\">\n            <div class=\"mb-3\">\n                <img class=\"d-block w-25 mx-auto\" [src]=\"ticketInfo.image\">\n            </div>\n            <div class=\"mb-3\">\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>劇場</div>\n                    <div>{{ ticketInfo.theater }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>スクリーン</div>\n                    <div>{{ ticketInfo.screen }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>作品</div>\n                    <div>{{ ticketInfo.film }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>上映日時</div>\n                    <div>{{ ticketInfo.startDate }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>座席</div>\n                    <div>{{ ticketInfo.seatType }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>枚数</div>\n                    <div>{{ ticketInfo.seatLength }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>決済方法</div>\n                    <div>{{ ticketInfo.paymentMethod }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3\">\n                    <div>使用コイン</div>\n                    <div>{{ ticketInfo.useCoin }}コイン</div>\n                </div>\n            </div>\n        </div>\n        <div *ngIf=\"type === 'goods'\">\n            <div class=\"mb-3\">\n                <img class=\"d-block w-25 mx-auto\" [src]=\"goods.image\">\n            </div>\n            <div class=\"mb-3\">\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>商品</div>\n                    <div>{{ goods.item }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>個数</div>\n                    <div>{{ goods.itemLength }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                    <div>決済方法</div>\n                    <div>{{ goods.paymentMethod }}</div>\n                </div>\n                <div class=\"d-flex justify-content-between align-items-center py-3\">\n                    <div>使用コイン</div>\n                    <div>{{ goods.useCoin }}コイン</div>\n                </div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1215,6 +1222,8 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HistoryDetailsComponent", function() { return HistoryDetailsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_goods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data/goods */ "./src/app/data/goods.ts");
+/* harmony import */ var _data_ticket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../data/ticket */ "./src/app/data/ticket.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1225,10 +1234,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var HistoryDetailsComponent = /** @class */ (function () {
     function HistoryDetailsComponent() {
     }
     HistoryDetailsComponent.prototype.ngOnInit = function () {
+        this.type = 'ticket';
+        this.ticketInfo = _data_ticket__WEBPACK_IMPORTED_MODULE_2__["ticketInfo"];
+        this.goods = _data_goods__WEBPACK_IMPORTED_MODULE_1__["goodsInfo"];
     };
     HistoryDetailsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1315,7 +1329,7 @@ var HistoryListComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"px-3 mb-3 bg-white shadow-sm\">\n        <div class=\"d-flex justify-content-between align-items-center p-3 border-bottom\">\n            <div><i class=\"fas fa-coins mr-2 large-text\"></i>エンタメコイン</div>\n            <div class=\"large-text\"><strong>{{ (user | async)?.coinAccounts[0].availableBalance }}pt</strong></div>\n        </div>\n        <div class=\"d-flex justify-content-between align-items-center p-3\">\n            <div><i class=\"fab fa-product-hunt mr-2 large-text\"></i>共通ポイント</div>\n            <div class=\"large-text\"><strong>{{ (user | async)?.pointAccounts[0].availableBalance }}pt</strong></div>\n        </div>\n    </div>\n    <div class=\"p-3  mb-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button routerLink=\"/ticket\" type=\"button\" class=\"btn btn-block btn-primary\">チケット購入</button>\n    </div>\n    <div class=\"p-3 mb-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button routerLink=\"/goods\" type=\"button\" class=\"btn btn-block btn-primary\">グッズ購入</button>\n    </div>\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button routerLink=\"/history\" type=\"button\" class=\"btn btn-block btn-primary\">購入履歴</button>\n    </div>\n</div>\n\n<app-loading [show]=\"isLoading | async\"></app-loading>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"px-3 mb-3 bg-white shadow-sm\">\n        <div class=\"d-flex justify-content-between align-items-center p-3 border-bottom\">\n            <div><i class=\"fas fa-coins mr-2 large-text\"></i>エンタメコイン</div>\n            <div class=\"large-text\"><strong>{{ (user | async)?.coinAccounts[0].availableBalance }}pt</strong></div>\n        </div>\n        <div class=\"d-flex justify-content-between align-items-center p-3\">\n            <div><i class=\"fab fa-product-hunt mr-2 large-text\"></i>共通ポイント</div>\n            <div class=\"large-text\"><strong>{{ (user | async)?.pointAccounts[0].availableBalance }}pt</strong></div>\n        </div>\n    </div>\n    <div class=\"p-3  mb-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button *ngIf=\"!(isTicket | async)\" routerLink=\"/ticket\" type=\"button\" class=\"btn btn-block btn-primary\">チケット購入</button>\n        <button *ngIf=\"(isTicket | async)\" disabled type=\"button\" class=\"btn btn-block btn-primary\" >購入済み</button>\n    </div>\n    <div class=\"p-3 mb-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button routerLink=\"/goods\" type=\"button\" class=\"btn btn-block btn-primary\">グッズ購入</button>\n    </div>\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"w-25 mx-auto d-block\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <button routerLink=\"/history\" type=\"button\" class=\"btn btn-block btn-primary\">購入履歴</button>\n    </div>\n</div>\n\n<app-loading [show]=\"(isUserLoading | async) && (isPurchaseLoading | async)\"></app-loading>"
 
 /***/ }),
 
@@ -1366,14 +1380,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var IndexComponent = /** @class */ (function () {
-    function IndexComponent(userStore, actions, router) {
+    function IndexComponent(userStore, purchaseStore, actions, router) {
         this.userStore = userStore;
+        this.purchaseStore = purchaseStore;
         this.actions = actions;
         this.router = router;
     }
     IndexComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.isLoading = this.userStore.select(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getUserLoading"]);
+        this.isUserLoading = this.userStore.select(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getUserLoading"]);
         this.user = this.userStore.select(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getUser"]);
         this.user.subscribe(function (result) {
             if (result === null) {
@@ -1382,6 +1397,8 @@ var IndexComponent = /** @class */ (function () {
             }
             _this.update({ user: result });
         });
+        this.isPurchaseLoading = this.purchaseStore.select(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getPurchaseLoading"]);
+        this.isTicket = this.purchaseStore.select(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getTicket"]);
     };
     /**
      * update
@@ -1405,6 +1422,7 @@ var IndexComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./index.component.scss */ "./src/app/components/pages/index/index.component.scss")]
         }),
         __metadata("design:paramtypes", [_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["Store"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_3__["Store"],
             _ngrx_effects__WEBPACK_IMPORTED_MODULE_2__["Actions"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], IndexComponent);
@@ -1485,7 +1503,7 @@ var NotfoundComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>劇場</div>\n                <div>劇場1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>スクリーン</div>\n                <div>スクリーン1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>作品</div>\n                <div>KING OF PRISM</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>上映日時</div>\n                <div>2018/08/31 12:00</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>座席</div>\n                <div>自由席</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>枚数</div>\n                <div>1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>エンタメコイン</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用ポイント</div>\n                <div>1000pt</div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" [src]=\"ticketInfo.image\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>劇場</div>\n                <div>{{ ticketInfo.theater }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>スクリーン</div>\n                <div>{{ ticketInfo.screen }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>作品</div>\n                <div>{{ ticketInfo.film }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>上映日時</div>\n                <div>{{ ticketInfo.startDate }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>座席</div>\n                <div>{{ ticketInfo.seatType }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>枚数</div>\n                <div>{{ ticketInfo.seatLength }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>{{ ticketInfo.paymentMethod }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用コイン</div>\n                <div>{{ ticketInfo.useCoin }}コイン</div>\n            </div>\n        </div>\n        <div class=\"mb-3\">\n            <img class=\"d-block mx-auto\" src=\"/assets/images/qrcode.png\" width=\"100\">\n        </div>\n        <button routerLink=\"/\" type=\"button\" class=\"btn btn-block btn-outline-primary\">TOPへ戻る</button>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1511,6 +1529,7 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TicketCompleteComponent", function() { return TicketCompleteComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_ticket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data/ticket */ "./src/app/data/ticket.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1521,10 +1540,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var TicketCompleteComponent = /** @class */ (function () {
     function TicketCompleteComponent() {
     }
     TicketCompleteComponent.prototype.ngOnInit = function () {
+        this.ticketInfo = _data_ticket__WEBPACK_IMPORTED_MODULE_1__["ticketInfo"];
     };
     TicketCompleteComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1548,7 +1569,7 @@ var TicketCompleteComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" src=\"/assets/images/tmp_01.png\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>劇場</div>\n                <div>劇場1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>スクリーン</div>\n                <div>スクリーン1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>作品</div>\n                <div>KING OF PRISM</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>上映日時</div>\n                <div>2018/08/31 12:00</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>座席</div>\n                <div>自由席</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>枚数</div>\n                <div>1</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>エンタメコイン</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用ポイント</div>\n                <div>1000pt</div>\n            </div>\n        </div>\n        <button routerLink=\"/ticket/complete\" type=\"button\" class=\"btn btn-block btn-primary\">購入</button>\n        <button routerLink=\"/ticket\" type=\"button\" class=\"btn btn-block btn-outline-primary\">戻る</button>\n    </div>\n</div>"
+module.exports = "<div class=\"p-3\">\n    <div class=\"p-3 bg-white shadow-sm\">\n        <div class=\"mb-3\">\n            <img class=\"d-block w-25 mx-auto\" [src]=\"ticketInfo.image\">\n        </div>\n        <div class=\"mb-3\">\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>劇場</div>\n                <div>{{ ticketInfo.theater }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>スクリーン</div>\n                <div>{{ ticketInfo.screen }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>作品</div>\n                <div>{{ ticketInfo.film }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>上映日時</div>\n                <div>{{ ticketInfo.startDate }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>座席</div>\n                <div>{{ ticketInfo.seatType }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>枚数</div>\n                <div>{{ ticketInfo.seatLength }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3 border-bottom\">\n                <div>決済方法</div>\n                <div>{{ ticketInfo.paymentMethod }}</div>\n            </div>\n            <div class=\"d-flex justify-content-between align-items-center py-3\">\n                <div>使用コイン</div>\n                <div>{{ ticketInfo.useCoin }}コイン</div>\n            </div>\n        </div>\n        <button routerLink=\"/ticket/complete\" type=\"button\" class=\"btn btn-block btn-primary\">購入</button>\n        <button routerLink=\"/ticket\" type=\"button\" class=\"btn btn-block btn-outline-primary\">戻る</button>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1574,6 +1595,7 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TicketConfirmComponent", function() { return TicketConfirmComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_ticket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data/ticket */ "./src/app/data/ticket.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1584,10 +1606,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var TicketConfirmComponent = /** @class */ (function () {
     function TicketConfirmComponent() {
     }
     TicketConfirmComponent.prototype.ngOnInit = function () {
+        this.ticketInfo = _data_ticket__WEBPACK_IMPORTED_MODULE_1__["ticketInfo"];
     };
     TicketConfirmComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -2260,45 +2284,66 @@ var NavigationComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/models/index.ts":
-/*!*********************************!*\
-  !*** ./src/app/models/index.ts ***!
-  \*********************************/
-/*! exports provided: Purchase, User */
+/***/ "./src/app/data/goods.ts":
+/*!*******************************!*\
+  !*** ./src/app/data/goods.ts ***!
+  \*******************************/
+/*! exports provided: goodsInfo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _purchase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./purchase */ "./src/app/models/purchase.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Purchase", function() { return _purchase__WEBPACK_IMPORTED_MODULE_0__["Purchase"]; });
-
-/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./src/app/models/user.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _user__WEBPACK_IMPORTED_MODULE_1__["User"]; });
-
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "goodsInfo", function() { return goodsInfo; });
+;
+var goodsInfo = {
+    item: 'KING OF PRISM',
+    itemLength: 1,
+    paymentMethod: 'エンタメコイン',
+    useCoin: 1000,
+    image: '/assets/images/tmp_01.png'
+};
 
 
 /***/ }),
 
-/***/ "./src/app/models/purchase.ts":
-/*!************************************!*\
-  !*** ./src/app/models/purchase.ts ***!
-  \************************************/
-/*! exports provided: Purchase */
+/***/ "./src/app/data/ticket.ts":
+/*!********************************!*\
+  !*** ./src/app/data/ticket.ts ***!
+  \********************************/
+/*! exports provided: ticketInfo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Purchase", function() { return Purchase; });
-var Purchase = /** @class */ (function () {
-    function Purchase(data) {
-        this.userName = data.userName;
-        this.coinAccounts = data.coinAccounts;
-        this.pointAccounts = data.pointAccounts;
-    }
-    return Purchase;
-}());
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ticketInfo", function() { return ticketInfo; });
+;
+var ticketInfo = {
+    theater: '劇場１',
+    screen: 'スクリーン1',
+    film: 'KING OF PRISM',
+    startDate: '2018/08/31 12:00',
+    seatType: '自由席',
+    seatLength: 1,
+    paymentMethod: 'エンタメコイン',
+    useCoin: 1000,
+    image: '/assets/images/tmp_01.png'
+};
+
+
+/***/ }),
+
+/***/ "./src/app/models/index.ts":
+/*!*********************************!*\
+  !*** ./src/app/models/index.ts ***!
+  \*********************************/
+/*! exports provided: User */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user */ "./src/app/models/user.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _user__WEBPACK_IMPORTED_MODULE_0__["User"]; });
+
 
 
 
@@ -2828,10 +2873,7 @@ var MocoinService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PurchaseService", function() { return PurchaseService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _mocoin_api_javascript_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mocoin/api-javascript-client */ "../../node_modules/@mocoin/api-javascript-client/lib/index.js");
-/* harmony import */ var _mocoin_api_javascript_client__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mocoin_api_javascript_client__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models */ "./src/app/models/index.ts");
-/* harmony import */ var _mocoin_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mocoin.service */ "./src/app/services/mocoin.service.ts");
+/* harmony import */ var _mocoin_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mocoin.service */ "./src/app/services/mocoin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2878,64 +2920,22 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 
 
-
-
 var PurchaseService = /** @class */ (function () {
     function PurchaseService(mocoin) {
         this.mocoin = mocoin;
     }
     /**
-     * ユーザー作成
-     * @method createPurchase
+     * チケット購入
+     * @method purchaseTicket
      */
-    PurchaseService.prototype.createPurchase = function () {
+    PurchaseService.prototype.purchaseTicket = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var userName, searchCoinAccountsResult, coinAccounts, coinAccount, searchPointAccountsResult, pointAccounts, pointAccount;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.mocoin.getServices()];
                     case 1:
                         _a.sent();
-                        userName = this.mocoin.userName;
-                        return [4 /*yield*/, this.mocoin.person.searchCoinAccounts({
-                                personId: 'me'
-                            })];
-                    case 2:
-                        searchCoinAccountsResult = _a.sent();
-                        coinAccounts = searchCoinAccountsResult.filter(function (account) {
-                            return (account.status === _mocoin_api_javascript_client__WEBPACK_IMPORTED_MODULE_1__["factory"].pecorino.accountStatusType.Opened);
-                        });
-                        if (!(coinAccounts.length === 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.mocoin.person.openCoinAccount({
-                                personId: 'me',
-                                name: userName
-                            })];
-                    case 3:
-                        coinAccount = _a.sent();
-                        coinAccounts.push(coinAccount);
-                        _a.label = 4;
-                    case 4: return [4 /*yield*/, this.mocoin.person.searchPointAccounts({
-                            personId: 'me'
-                        })];
-                    case 5:
-                        searchPointAccountsResult = _a.sent();
-                        pointAccounts = searchPointAccountsResult.filter(function (account) {
-                            return (account.status === _mocoin_api_javascript_client__WEBPACK_IMPORTED_MODULE_1__["factory"].pecorino.accountStatusType.Opened);
-                        });
-                        if (!(pointAccounts.length === 0)) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.mocoin.person.openPointAccount({
-                                personId: 'me',
-                                name: userName
-                            })];
-                    case 6:
-                        pointAccount = _a.sent();
-                        pointAccounts.push(pointAccount);
-                        _a.label = 7;
-                    case 7: return [2 /*return*/, new _models__WEBPACK_IMPORTED_MODULE_2__["Purchase"]({
-                            userName: userName,
-                            coinAccounts: coinAccounts,
-                            pointAccounts: pointAccounts
-                        })];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -2944,7 +2944,7 @@ var PurchaseService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [_mocoin_service__WEBPACK_IMPORTED_MODULE_3__["MocoinService"]])
+        __metadata("design:paramtypes", [_mocoin_service__WEBPACK_IMPORTED_MODULE_1__["MocoinService"]])
     ], PurchaseService);
     return PurchaseService;
 }());
@@ -3213,7 +3213,7 @@ var UtilService = /** @class */ (function () {
 /*!****************************************!*\
   !*** ./src/app/store/actions/index.ts ***!
   \****************************************/
-/*! exports provided: PurchaseActionTypes, CreatePurchase, CreatePurchaseSuccess, CreatePurchaseFail, UserActionTypes, CreateUser, CreateUserSuccess, CreateUserFail, UpdateUser, UpdateUserSuccess, UpdateUserFail */
+/*! exports provided: PurchaseActionTypes, PurchaseTicket, PurchaseTicketSuccess, PurchaseTicketFail, UserActionTypes, CreateUser, CreateUserSuccess, CreateUserFail, UpdateUser, UpdateUserSuccess, UpdateUserFail */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3221,11 +3221,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _purchase_action__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./purchase.action */ "./src/app/store/actions/purchase.action.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PurchaseActionTypes", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["PurchaseActionTypes"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreatePurchase", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["CreatePurchase"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicket", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["PurchaseTicket"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreatePurchaseSuccess", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["CreatePurchaseSuccess"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicketSuccess", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["PurchaseTicketSuccess"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreatePurchaseFail", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["CreatePurchaseFail"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicketFail", function() { return _purchase_action__WEBPACK_IMPORTED_MODULE_0__["PurchaseTicketFail"]; });
 
 /* harmony import */ var _user_action__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user.action */ "./src/app/store/actions/user.action.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserActionTypes", function() { return _user_action__WEBPACK_IMPORTED_MODULE_1__["UserActionTypes"]; });
@@ -3252,55 +3252,55 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************!*\
   !*** ./src/app/store/actions/purchase.action.ts ***!
   \**************************************************/
-/*! exports provided: PurchaseActionTypes, CreatePurchase, CreatePurchaseSuccess, CreatePurchaseFail */
+/*! exports provided: PurchaseActionTypes, PurchaseTicket, PurchaseTicketSuccess, PurchaseTicketFail */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PurchaseActionTypes", function() { return PurchaseActionTypes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatePurchase", function() { return CreatePurchase; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatePurchaseSuccess", function() { return CreatePurchaseSuccess; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatePurchaseFail", function() { return CreatePurchaseFail; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicket", function() { return PurchaseTicket; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicketSuccess", function() { return PurchaseTicketSuccess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PurchaseTicketFail", function() { return PurchaseTicketFail; });
 /**
  * Action types
  */
 var PurchaseActionTypes;
 (function (PurchaseActionTypes) {
-    PurchaseActionTypes["CreatePurchase"] = "[Purchase] Create";
-    PurchaseActionTypes["CreatePurchaseSuccess"] = "[Purchase] Create Success";
-    PurchaseActionTypes["CreatePurchaseFail"] = "[Purchase] Create Fail";
+    PurchaseActionTypes["PurchaseTicket"] = "[Purchase] Purchase Ticket";
+    PurchaseActionTypes["PurchaseTicketSuccess"] = "[Purchase] Purchase Ticket Success";
+    PurchaseActionTypes["PurchaseTicketFail"] = "[Purchase] Purchase Ticket Fail";
 })(PurchaseActionTypes || (PurchaseActionTypes = {}));
 /**
- * CreatePurchase
+ * PurchaseTicket
  */
-var CreatePurchase = /** @class */ (function () {
-    function CreatePurchase(payload) {
+var PurchaseTicket = /** @class */ (function () {
+    function PurchaseTicket(payload) {
         this.payload = payload;
-        this.type = PurchaseActionTypes.CreatePurchase;
+        this.type = PurchaseActionTypes.PurchaseTicket;
     }
-    return CreatePurchase;
+    return PurchaseTicket;
 }());
 
 /**
- * CreatePurchaseSuccess
+ * PurchaseTicketSuccess
  */
-var CreatePurchaseSuccess = /** @class */ (function () {
-    function CreatePurchaseSuccess(payload) {
+var PurchaseTicketSuccess = /** @class */ (function () {
+    function PurchaseTicketSuccess(payload) {
         this.payload = payload;
-        this.type = PurchaseActionTypes.CreatePurchaseSuccess;
+        this.type = PurchaseActionTypes.PurchaseTicketSuccess;
     }
-    return CreatePurchaseSuccess;
+    return PurchaseTicketSuccess;
 }());
 
 /**
- * CreatePurchaseFail
+ * PurchaseTicketFail
  */
-var CreatePurchaseFail = /** @class */ (function () {
-    function CreatePurchaseFail(payload) {
+var PurchaseTicketFail = /** @class */ (function () {
+    function PurchaseTicketFail(payload) {
         this.payload = payload;
-        this.type = PurchaseActionTypes.CreatePurchaseFail;
+        this.type = PurchaseActionTypes.PurchaseTicketFail;
     }
-    return CreatePurchaseFail;
+    return PurchaseTicketFail;
 }());
 
 
@@ -3499,9 +3499,9 @@ function storageSync(reducer) {
     return function (state, action) {
         var newState = reducer(state, action);
         Object.keys(newState).forEach(function (key) {
-            sessionStorage.setItem(key, JSON.stringify(newState[key]));
+            localStorage.setItem(key, JSON.stringify(newState[key]));
         });
-        sessionStorage.setItem('state', JSON.stringify(newState));
+        localStorage.setItem('state', JSON.stringify(newState));
         return newState;
     };
 }
@@ -3602,35 +3602,30 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
  * Purchase effects
  */
 var PurchaseEffects = /** @class */ (function () {
-    function PurchaseEffects(actions, user) {
+    function PurchaseEffects(actions, purchase) {
         var _this = this;
         this.actions = actions;
-        this.user = user;
+        this.purchase = purchase;
         /**
-         * CreatePurchase
+         * PurchaseTicket
          */
-        this.createPurchase = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["PurchaseActionTypes"].CreatePurchase), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (action) { return action.payload; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["mergeMap"])(function () { return __awaiter(_this, void 0, void 0, function () {
-            var user, error_1;
+        this.purchaseTicket = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["PurchaseActionTypes"].PurchaseTicket), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (action) { return action.payload; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["mergeMap"])(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.user.createPurchase()];
-                    case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["CreatePurchaseSuccess"]({ user: user })];
-                    case 2:
-                        error_1 = _a.sent();
-                        return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["CreatePurchaseFail"]({ error: error_1 })];
-                    case 3: return [2 /*return*/];
+                try {
+                    this.purchase.purchaseTicket();
+                    return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["PurchaseTicketSuccess"]()];
                 }
+                catch (error) {
+                    return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["PurchaseTicketFail"]({ error: error })];
+                }
+                return [2 /*return*/];
             });
         }); }));
     }
     __decorate([
         Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Effect"])(),
         __metadata("design:type", Object)
-    ], PurchaseEffects.prototype, "createPurchase", void 0);
+    ], PurchaseEffects.prototype, "purchaseTicket", void 0);
     PurchaseEffects = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"],
@@ -3743,18 +3738,15 @@ var UserEffects = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('Effect updateUser', payload);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.user.updateUser({ user: payload.user })];
-                    case 2:
+                    case 1:
                         user = _a.sent();
                         return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["UpdateUserSuccess"]({ user: user })];
-                    case 3:
+                    case 2:
                         error_2 = _a.sent();
                         return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_4__["UpdateUserFail"]({ error: error_2 })];
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); }));
@@ -3848,7 +3840,7 @@ var PurchaseStoreModule = /** @class */ (function () {
 /*!*****************************************!*\
   !*** ./src/app/store/reducers/index.ts ***!
   \*****************************************/
-/*! exports provided: userReducer, purchaseReducer, getFeatureUserState, getUserLoading, getUser, getFeaturePurchaseState, getPurchaseLoading, getPurchase */
+/*! exports provided: userReducer, purchaseReducer, getFeatureUserState, getUserLoading, getUser, getFeaturePurchaseState, getPurchaseLoading, getTicket */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3858,7 +3850,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUser", function() { return getUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFeaturePurchaseState", function() { return getFeaturePurchaseState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseLoading", function() { return getPurchaseLoading; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchase", function() { return getPurchase; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTicket", function() { return getTicket; });
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
 /* harmony import */ var _purchase_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./purchase.reducer */ "./src/app/store/reducers/purchase.reducer.ts");
 /* harmony import */ var _user_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user.reducer */ "./src/app/store/reducers/user.reducer.ts");
@@ -3881,8 +3873,8 @@ var getFeatureUserState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["creat
 var getUserLoading = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureUserState, _user_reducer__WEBPACK_IMPORTED_MODULE_2__["getUserLoading"]);
 var getUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureUserState, _user_reducer__WEBPACK_IMPORTED_MODULE_2__["getUser"]);
 var getFeaturePurchaseState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createFeatureSelector"])('Purchase');
-var getPurchaseLoading = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureUserState, _purchase_reducer__WEBPACK_IMPORTED_MODULE_1__["getPurchaseLoading"]);
-var getPurchase = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureUserState, _purchase_reducer__WEBPACK_IMPORTED_MODULE_1__["getPurchase"]);
+var getPurchaseLoading = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeaturePurchaseState, _purchase_reducer__WEBPACK_IMPORTED_MODULE_1__["getPurchaseLoading"]);
+var getTicket = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeaturePurchaseState, _purchase_reducer__WEBPACK_IMPORTED_MODULE_1__["getTicket"]);
 
 
 /***/ }),
@@ -3891,7 +3883,7 @@ var getPurchase = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelecto
 /*!****************************************************!*\
   !*** ./src/app/store/reducers/purchase.reducer.ts ***!
   \****************************************************/
-/*! exports provided: initialPurchaseState, purchaseReducer, getPurchaseLoading, getPurchase */
+/*! exports provided: initialPurchaseState, purchaseReducer, getPurchaseLoading, getTicket */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3899,9 +3891,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialPurchaseState", function() { return initialPurchaseState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "purchaseReducer", function() { return purchaseReducer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseLoading", function() { return getPurchaseLoading; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchase", function() { return getPurchase; });
-/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../models */ "./src/app/models/index.ts");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions */ "./src/app/store/actions/index.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTicket", function() { return getTicket; });
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions */ "./src/app/store/actions/index.ts");
 var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -3911,26 +3902,25 @@ var __assign = (undefined && undefined.__assign) || Object.assign || function(t)
     return t;
 };
 
-
 /**
  * Initial state
  */
 var initialPurchaseState = {
     loading: false,
-    user: null,
+    ticket: false,
+    goods: false,
     error: null
 };
 function getInitialPurchaseState() {
-    var json = sessionStorage.getItem('Purchase');
+    var json = localStorage.getItem('Purchase');
     if (json === null) {
         return initialPurchaseState;
     }
     var data = JSON.parse(json);
     return {
         loading: data.loading,
-        user: (data.user === null)
-            ? null
-            : new _models__WEBPACK_IMPORTED_MODULE_0__["Purchase"](data.user),
+        ticket: data.ticket,
+        goods: data.goods,
         error: data.error
     };
 }
@@ -3942,14 +3932,13 @@ function getInitialPurchaseState() {
 function purchaseReducer(state, action) {
     if (state === void 0) { state = getInitialPurchaseState(); }
     switch (action.type) {
-        case _actions__WEBPACK_IMPORTED_MODULE_1__["PurchaseActionTypes"].CreatePurchase: {
+        case _actions__WEBPACK_IMPORTED_MODULE_0__["PurchaseActionTypes"].PurchaseTicket: {
             return __assign({}, state, { loading: true });
         }
-        case _actions__WEBPACK_IMPORTED_MODULE_1__["PurchaseActionTypes"].CreatePurchaseSuccess: {
-            var user = action.payload.user;
-            return __assign({}, state, { loading: false, user: user, error: null });
+        case _actions__WEBPACK_IMPORTED_MODULE_0__["PurchaseActionTypes"].PurchaseTicketSuccess: {
+            return __assign({}, state, { loading: false, ticket: true, error: null });
         }
-        case _actions__WEBPACK_IMPORTED_MODULE_1__["PurchaseActionTypes"].CreatePurchaseFail: {
+        case _actions__WEBPACK_IMPORTED_MODULE_0__["PurchaseActionTypes"].PurchaseTicketFail: {
             var error = action.payload.error;
             return __assign({}, state, { loading: false, error: error });
         }
@@ -3962,7 +3951,7 @@ function purchaseReducer(state, action) {
  * Selectors
  */
 var getPurchaseLoading = function (state) { return state.loading; };
-var getPurchase = function (state) { return state.user; };
+var getTicket = function (state) { return state.ticket; };
 
 
 /***/ }),
@@ -4001,7 +3990,7 @@ var initialUserState = {
     error: null
 };
 function getInitialUserState() {
-    var json = sessionStorage.getItem('User');
+    var json = localStorage.getItem('User');
     if (json === null) {
         return initialUserState;
     }
@@ -4034,7 +4023,6 @@ function userReducer(state, action) {
             return __assign({}, state, { loading: false, error: error });
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["UserActionTypes"].UpdateUser: {
-            console.log('userReducer updateUser');
             return __assign({}, state, { loading: true });
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["UserActionTypes"].UpdateUserSuccess: {
@@ -4167,7 +4155,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\hataguchi\Desktop\workspace\motionpicture\ENTAME\entame-tiff-frontend\src\client\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\Users\hataguchi\Desktop\workspace\motionpicture\ENTAME\entame-experiment-tiff\src\client\src\main.ts */"./src/main.ts");
 
 
 /***/ })

@@ -20,7 +20,7 @@ export const initialUserState: IUserState = {
 };
 
 function getInitialUserState(): IUserState {
-    const json = sessionStorage.getItem('User');
+    const json = localStorage.getItem('User');
     if (json === null) {
         return initialUserState;
     }
@@ -56,7 +56,6 @@ export function userReducer(
             return { ...state, loading: false, error: error };
         }
         case UserActionTypes.UpdateUser: {
-            console.log('userReducer updateUser');
             return { ...state, loading: true };
         }
         case UserActionTypes.UpdateUserSuccess: {

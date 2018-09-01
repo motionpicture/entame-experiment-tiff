@@ -1,4 +1,3 @@
-import { Purchase } from '../../models';
 import { PurchaseActions, PurchaseActionTypes } from '../actions';
 
 /**
@@ -6,7 +5,8 @@ import { PurchaseActions, PurchaseActionTypes } from '../actions';
  */
 export interface IPurchaseState {
     loading: boolean;
-    user: Purchase | null;
+    ticket: boolean;
+    goods: boolean;
     error: Error | null;
 }
 
@@ -15,21 +15,21 @@ export interface IPurchaseState {
  */
 export const initialPurchaseState: IPurchaseState = {
     loading: false,
-    user: null,
+    ticket: false,
+    goods: false,
     error: null
 };
 
 function getInitialPurchaseState(): IPurchaseState {
-    const json = sessionStorage.getItem('Purchase');
+    const json = localStorage.getItem('Purchase');
     if (json === null) {
         return initialPurchaseState;
     }
     const data = JSON.parse(json);
     return {
         loading: data.loading,
-        user: (data.user === null)
-            ? null
-            : new Purchase(data.user),
+        ticket: data.ticket,
+        goods: data.goods,
         error: data.error
     };
 }
@@ -44,14 +44,13 @@ export function purchaseReducer(
     action: PurchaseActions
 ): IPurchaseState {
     switch (action.type) {
-        case PurchaseActionTypes.CreatePurchase: {
+        case PurchaseActionTypes.PurchaseTicket: {
             return { ...state, loading: true };
         }
-        case PurchaseActionTypes.CreatePurchaseSuccess: {
-            const user = action.payload.user;
-            return { ...state, loading: false, user: user, error: null };
+        case PurchaseActionTypes.PurchaseTicketSuccess: {
+            return { ...state, loading: false, ticket: true, error: null };
         }
-        case PurchaseActionTypes.CreatePurchaseFail: {
+        case PurchaseActionTypes.PurchaseTicketFail: {
             const error = action.payload.error;
             return { ...state, loading: false, error: error };
         }
@@ -65,4 +64,4 @@ export function purchaseReducer(
  * Selectors
  */
 export const getPurchaseLoading = (state: IPurchaseState) => state.loading;
-export const getPurchase = (state: IPurchaseState) => state.user;
+export const getTicket = (state: IPurchaseState) => state.ticket;

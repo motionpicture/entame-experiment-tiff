@@ -36,9 +36,9 @@ export function storageSync(reducer: ActionReducer<IState>) {
     return (state: any, action: any) => {
         const newState = reducer(state, action);
         Object.keys(newState).forEach((key) => {
-            sessionStorage.setItem(key, JSON.stringify((<any>newState)[key]));
+            localStorage.setItem(key, JSON.stringify((<any>newState)[key]));
         });
-        sessionStorage.setItem('state', JSON.stringify(newState));
+        localStorage.setItem('state', JSON.stringify(newState));
         return newState;
     };
 }

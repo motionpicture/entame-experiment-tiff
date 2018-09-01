@@ -33,6 +33,7 @@ import { LoadingComponent } from './components/parts/loading/loading.component';
 import { NavigationComponent } from './components/parts/navigation/navigation.component';
 import {
     AppRoutingModule,
+    PurchaseModule,
     UserModule
 } from './modules';
 import { CoreStoreModule } from './store/core/store';
@@ -75,6 +76,7 @@ import { CoreStoreModule } from './store/core/store';
         ReactiveFormsModule,
         FormsModule,
         UserModule,
+        PurchaseModule,
         CoreStoreModule,
         NgbModule.forRoot()
     ],

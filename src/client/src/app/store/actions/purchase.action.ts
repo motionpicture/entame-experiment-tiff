@@ -1,36 +1,35 @@
 import { Action } from '@ngrx/store';
-import { Purchase } from '../../models';
 
 /**
  * Action types
  */
 export enum PurchaseActionTypes {
-    CreatePurchase = '[Purchase] Create',
-    CreatePurchaseSuccess = '[Purchase] Create Success',
-    CreatePurchaseFail = '[Purchase] Create Fail',
+    PurchaseTicket = '[Purchase] Purchase Ticket',
+    PurchaseTicketSuccess = '[Purchase] Purchase Ticket Success',
+    PurchaseTicketFail = '[Purchase] Purchase Ticket Fail',
 }
 
 /**
- * CreatePurchase
+ * PurchaseTicket
  */
-export class CreatePurchase implements Action {
-    public readonly type = PurchaseActionTypes.CreatePurchase;
+export class PurchaseTicket implements Action {
+    public readonly type = PurchaseActionTypes.PurchaseTicket;
     constructor(public payload?: {}) { }
 }
 
 /**
- * CreatePurchaseSuccess
+ * PurchaseTicketSuccess
  */
-export class CreatePurchaseSuccess implements Action {
-    public readonly type = PurchaseActionTypes.CreatePurchaseSuccess;
-    constructor(public payload: { user: Purchase }) { }
+export class PurchaseTicketSuccess implements Action {
+    public readonly type = PurchaseActionTypes.PurchaseTicketSuccess;
+    constructor(public payload?: {}) { }
 }
 
 /**
- * CreatePurchaseFail
+ * PurchaseTicketFail
  */
-export class CreatePurchaseFail implements Action {
-    public readonly type = PurchaseActionTypes.CreatePurchaseFail;
+export class PurchaseTicketFail implements Action {
+    public readonly type = PurchaseActionTypes.PurchaseTicketFail;
     constructor(public payload: { error: Error }) { }
 }
 
@@ -39,6 +38,6 @@ export class CreatePurchaseFail implements Action {
  * Actions
  */
 export type PurchaseActions =
-    | CreatePurchase
-    | CreatePurchaseSuccess
-    | CreatePurchaseFail;
+    | PurchaseTicket
+    | PurchaseTicketSuccess
+    | PurchaseTicketFail;

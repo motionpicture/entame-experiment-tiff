@@ -3,10 +3,10 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
 import { PurchaseService } from '../../services';
 import {
-    CreatePurchase,
-    CreatePurchaseFail,
-    CreatePurchaseSuccess,
-    PurchaseActionTypes
+    PurchaseActionTypes,
+    PurchaseTicket,
+    PurchaseTicketFail,
+    PurchaseTicketSuccess
 } from '../actions';
 
 /**
@@ -17,28 +17,22 @@ export class PurchaseEffects {
 
     constructor(
         private actions: Actions,
-        private user: PurchaseService
+        private purchase: PurchaseService
     ) { }
 
     /**
-     * CreatePurchase
+     * PurchaseTicket
      */
     @Effect()
-    public createPurchase = this.actions.pipe(
-        ofType<CreatePurchase>(PurchaseActionTypes.CreatePurchase),
+    public purchaseTicket = this.actions.pipe(
+        ofType<PurchaseTicket>(PurchaseActionTypes.PurchaseTicket),
         map(action => action.payload),
         mergeMap(async () => {
-            // return this.user.createPurchase().then((user) => {
-            //     return new CreatePurchaseSuccess({ user: user });
-            // }).catch((error) => {
-            //     console.error(error);
-            //     return new CreatePurchaseFail({ error: error });
-            // });
             try {
-                const user = await this.user.createPurchase();
-                return new CreatePurchaseSuccess({ user: user });
+                this.purchase.purchaseTicket();
+                return new PurchaseTicketSuccess();
             } catch (error) {
-                return new CreatePurchaseFail({error: error});
+                return new PurchaseTicketFail({error: error});
             }
         })
     );

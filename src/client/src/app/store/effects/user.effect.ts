@@ -48,7 +48,6 @@ export class UserEffects {
         ofType<UpdateUser>(UserActionTypes.UpdateUser),
         map(action => action.payload),
         mergeMap(async (payload) => {
-            console.log('Effect updateUser', payload);
             try {
                 const user = await this.user.updateUser({ user: payload.user });
                 return new UpdateUserSuccess({ user: user });

@@ -1,24 +1,65 @@
 <div class="p-3">
     <div class="p-3 bg-white shadow-sm">
-        <div class="mb-3">
-            <img class="d-block w-25 mx-auto" src="/assets/images/tmp_01.png">
+        <div *ngIf="type === 'ticket'">
+            <div class="mb-3">
+                <img class="d-block w-25 mx-auto" [src]="ticketInfo.image">
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>劇場</div>
+                    <div>{{ ticketInfo.theater }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>スクリーン</div>
+                    <div>{{ ticketInfo.screen }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>作品</div>
+                    <div>{{ ticketInfo.film }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>上映日時</div>
+                    <div>{{ ticketInfo.startDate }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>座席</div>
+                    <div>{{ ticketInfo.seatType }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>枚数</div>
+                    <div>{{ ticketInfo.seatLength }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>決済方法</div>
+                    <div>{{ ticketInfo.paymentMethod }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <div>使用コイン</div>
+                    <div>{{ ticketInfo.useCoin }}コイン</div>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
-                <div>商品</div>
-                <div>KING OF PRISM</div>
+        <div *ngIf="type === 'goods'">
+            <div class="mb-3">
+                <img class="d-block w-25 mx-auto" [src]="goods.image">
             </div>
-            <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
-                <div>個数</div>
-                <div>1</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
-                <div>決済方法</div>
-                <div>エンタメコイン</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center py-3">
-                <div>使用ポイント</div>
-                <div>1000pt</div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>商品</div>
+                    <div>{{ goods.item }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>個数</div>
+                    <div>{{ goods.itemLength }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div>決済方法</div>
+                    <div>{{ goods.paymentMethod }}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <div>使用コイン</div>
+                    <div>{{ goods.useCoin }}コイン</div>
+                </div>
             </div>
         </div>
         <div class="mb-3">

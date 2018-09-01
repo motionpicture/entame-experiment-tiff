@@ -19,5 +19,5 @@ export const getUserLoading = createSelector(getFeatureUserState, userReducer.ge
 export const getUser = createSelector(getFeatureUserState, userReducer.getUser);
 
 export const getFeaturePurchaseState = createFeatureSelector<purchaseReducer.IPurchaseState>('Purchase');
-export const getPurchaseLoading = createSelector(getFeatureUserState, purchaseReducer.getPurchaseLoading);
-export const getPurchase = createSelector(getFeatureUserState, purchaseReducer.getPurchase);
+export const getPurchaseLoading = createSelector(getFeaturePurchaseState, purchaseReducer.getPurchaseLoading);
+export const getTicket = createSelector(getFeaturePurchaseState, purchaseReducer.getTicket);

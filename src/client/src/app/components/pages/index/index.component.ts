@@ -5,8 +5,18 @@ import { Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { User } from '../../../models';
-import { UpdateUser, UserActionTypes } from '../../../store/actions';
-import * as userReducers from '../../../store/reducers';
+import {
+    UpdateUser,
+    UserActionTypes
+} from '../../../store/actions';
+import {
+    getPurchaseLoading,
+    getTicket,
+    getUser,
+    getUserLoading,
+    IPurchaseState,
+    IUserState
+} from '../../../store/reducers';
 
 @Component({
     selector: 'app-index',
@@ -14,18 +24,21 @@ import * as userReducers from '../../../store/reducers';
     styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-    public isLoading: Observable<boolean>;
+    public isUserLoading: Observable<boolean>;
     public user: Observable<User | null>;
+    public isPurchaseLoading: Observable<boolean>;
+    public isTicket: Observable<boolean>;
 
     constructor(
-        private userStore: Store<userReducers.IUserState>,
+        private userStore: Store<IUserState>,
+        private purchaseStore: Store<IPurchaseState>,
         private actions: Actions,
         private router: Router
     ) { }
 
     public ngOnInit() {
-        this.isLoading = this.userStore.select(userReducers.getUserLoading);
-        this.user = this.userStore.select(userReducers.getUser);
+        this.isUserLoading = this.userStore.select(getUserLoading);
+        this.user = this.userStore.select(getUser);
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);
@@ -33,6 +46,8 @@ export class IndexComponent implements OnInit {
             }
             this.update({ user: result });
         });
+        this.isPurchaseLoading = this.purchaseStore.select(getPurchaseLoading);
+        this.isTicket = this.purchaseStore.select(getTicket);
     }
 
     /**
