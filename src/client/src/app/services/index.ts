@@ -1,4 +1,4 @@
 export * from './mocoin.service';
-export * from './purchase.service';
+export * from './coin.service';
 export * from './util.service';
 export * from './user.service';

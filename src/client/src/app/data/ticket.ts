@@ -6,9 +6,11 @@ export interface ITicketInfo {
     seatType: string;
     seatLength: number;
     paymentMethod: string;
-    useCoin: number;
+    amount: number;
     image: string;
-};
+    usedNotes: string;
+    qrcodeTocken: string;
+}
 
 export const ticketInfo: ITicketInfo = {
     theater: '劇場１',
@@ -18,6 +20,8 @@ export const ticketInfo: ITicketInfo = {
     seatType: '自由席',
     seatLength: 1,
     paymentMethod: 'エンタメコイン',
-    useCoin: 1000,
-    image: '/assets/images/tmp_01.png'
+    amount: 1500,
+    image: '/assets/images/tmp_01.png',
+    usedNotes: 'チケット引き換え',
+    qrcodeTocken: '12345678'
 };

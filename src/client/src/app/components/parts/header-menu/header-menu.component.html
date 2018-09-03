@@ -2,6 +2,7 @@
 
 <div class="menu text-white bg-dark" [class.active]="isOpen">
     <ul>
-        <li class="p-3 border-bottom" (click)="signOut()"><i class="fas fa-sign-out-alt mr-2"></i>ログアウト</li>
+        <li class="p-4 border-bottom" routerLink="/fido/remove"><i class="fas fa-fingerprint mr-2"></i>生体認証削除</li>
+        <li class="p-4 border-bottom" (click)="signOut()"><i class="fas fa-sign-out-alt mr-2"></i>ログアウト</li>
     </ul>
 </div>

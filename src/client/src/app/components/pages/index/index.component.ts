@@ -9,14 +9,7 @@ import {
     UpdateUser,
     UserActionTypes
 } from '../../../store/actions';
-import {
-    getPurchaseLoading,
-    getTicket,
-    getUser,
-    getUserLoading,
-    IPurchaseState,
-    IUserState
-} from '../../../store/reducers';
+import * as reducers from '../../../store/reducers';
 
 @Component({
     selector: 'app-index',
@@ -24,21 +17,23 @@ import {
     styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-    public isUserLoading: Observable<boolean>;
+    public isLoading: Observable<boolean>;
     public user: Observable<User | null>;
-    public isPurchaseLoading: Observable<boolean>;
     public isTicket: Observable<boolean>;
+    public isGoods: Observable<boolean>;
 
     constructor(
-        private userStore: Store<IUserState>,
-        private purchaseStore: Store<IPurchaseState>,
+        private userStore: Store<reducers.IUserState>,
+        private purchaseStore: Store<reducers.IPurchaseState>,
         private actions: Actions,
         private router: Router
     ) { }
 
-    public ngOnInit() {
-        this.isUserLoading = this.userStore.select(getUserLoading);
-        this.user = this.userStore.select(getUser);
+    public async ngOnInit() {
+        this.isLoading = this.userStore.select(reducers.getUserLoading);
+        this.user = this.userStore.select(reducers.getUser);
+        this.isTicket = this.purchaseStore.select(reducers.getTicket);
+        this.isGoods = this.purchaseStore.select(reducers.getGoods);
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);
@@ -46,8 +41,6 @@ export class IndexComponent implements OnInit {
             }
             this.update({ user: result });
         });
-        this.isPurchaseLoading = this.purchaseStore.select(getPurchaseLoading);
-        this.isTicket = this.purchaseStore.select(getTicket);
     }
 
     /**

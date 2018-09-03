@@ -3,7 +3,7 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from '../canActivates';
+import { AuthGuardService, FidoGuardService } from '../canActivates';
 import { BaseComponent } from '../components/pages/base/base.component';
 import { ErrorComponent } from '../components/pages/error/error.component';
 import { GoodsCompleteComponent } from '../components/pages/goods/goods-complete/goods-complete.component';
@@ -16,14 +16,16 @@ import { NotfoundComponent } from '../components/pages/notfound/notfound.compone
 import { TicketCompleteComponent } from '../components/pages/ticket/ticket-complete/ticket-complete.component';
 import { TicketConfirmComponent } from '../components/pages/ticket/ticket-confirm/ticket-confirm.component';
 import * as auth from '../routes/auth.route';
+import * as fido from '../routes/fido.route';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/index', pathMatch: 'full' },
     auth.route,
+    fido.route,
     {
         path: '',
         component: BaseComponent,
-        canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService, FidoGuardService],
         children: [
             { path: 'index', component: IndexComponent },
             {

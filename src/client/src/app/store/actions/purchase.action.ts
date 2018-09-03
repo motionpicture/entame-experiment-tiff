@@ -1,35 +1,44 @@
+import { factory } from '@mocoin/api-javascript-client';
 import { Action } from '@ngrx/store';
 
 /**
  * Action types
  */
 export enum PurchaseActionTypes {
-    PurchaseTicket = '[Purchase] Purchase Ticket',
-    PurchaseTicketSuccess = '[Purchase] Purchase Ticket Success',
-    PurchaseTicketFail = '[Purchase] Purchase Ticket Fail',
+    UseCoin = '[Purchase] Use Coin',
+    UseCoinSuccess = '[Purchase] Use Coin Success',
+    UseCoinFail = '[Purchase] Use Coin Fail',
 }
 
 /**
- * PurchaseTicket
+ * Purchase
  */
-export class PurchaseTicket implements Action {
-    public readonly type = PurchaseActionTypes.PurchaseTicket;
-    constructor(public payload?: {}) { }
+export class UseCoin implements Action {
+    public readonly type = PurchaseActionTypes.UseCoin;
+    constructor(public payload: {
+        type: 'ticket' | 'goods';
+        amount: number;
+        userName: string;
+        coinAccount: factory.pecorino.account.IAccount<factory.accountType.Coin>;
+        notes: string;
+    }) { }
 }
 
 /**
- * PurchaseTicketSuccess
+ * UseCoinSuccess
  */
-export class PurchaseTicketSuccess implements Action {
-    public readonly type = PurchaseActionTypes.PurchaseTicketSuccess;
-    constructor(public payload?: {}) { }
+export class UseCoinSuccess implements Action {
+    public readonly type = PurchaseActionTypes.UseCoinSuccess;
+    constructor(public payload: {
+        type: 'ticket' | 'goods';
+    }) { }
 }
 
 /**
- * PurchaseTicketFail
+ * UseCoinFail
  */
-export class PurchaseTicketFail implements Action {
-    public readonly type = PurchaseActionTypes.PurchaseTicketFail;
+export class UseCoinFail implements Action {
+    public readonly type = PurchaseActionTypes.UseCoinFail;
     constructor(public payload: { error: Error }) { }
 }
 
@@ -38,6 +47,6 @@ export class PurchaseTicketFail implements Action {
  * Actions
  */
 export type PurchaseActions =
-    | PurchaseTicket
-    | PurchaseTicketSuccess
-    | PurchaseTicketFail;
+    | UseCoin
+    | UseCoinSuccess
+    | UseCoinFail;

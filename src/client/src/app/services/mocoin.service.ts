@@ -21,6 +21,7 @@ export class MocoinService {
     public transaction: {
         transferCoin: mocoin.service.transaction.TransferCoin;
         buyCoin: mocoin.service.transaction.BuyCoin;
+        withdrawCoin: mocoin.service.transaction.WithdrawCoin;
     };
 
     constructor(
@@ -36,7 +37,8 @@ export class MocoinService {
             this.person = new mocoin.service.Person(option);
             this.transaction = {
                 transferCoin: new mocoin.service.transaction.TransferCoin(option),
-                buyCoin: new mocoin.service.transaction.BuyCoin(option)
+                buyCoin: new mocoin.service.transaction.BuyCoin(option),
+                withdrawCoin: new mocoin.service.transaction.WithdrawCoin(option)
             };
             // console.log(this);
         } catch (err) {

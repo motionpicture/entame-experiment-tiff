@@ -1,5 +1,5 @@
 <div class="p-3">
-    <div class="p-3 bg-white shadow-sm">
+    <div *ngIf="!(isGoods | async)" class="p-3 bg-white shadow-sm">
         <div class="mb-3">
             <img class="d-block w-25 mx-auto" src="/assets/images/tmp_01.png">
         </div>
@@ -7,6 +7,13 @@
             <p>QRコードを読み取り、グッズ購入してください。</p>
         </div>
         <button routerLink="/goods/confirm" type="button" class="btn btn-block btn-primary">QRコード読み取り</button>
+        <button routerLink="/" type="button" class="btn btn-block btn-outline-primary">戻る</button>
+    </div>
+
+    <div *ngIf="isGoods | async" class="p-3 bg-white shadow-sm mb-3">
+        <div class="mb-3">
+            購入履歴がありません。
+        </div>
         <button routerLink="/" type="button" class="btn btn-block btn-outline-primary">戻る</button>
     </div>
 </div>

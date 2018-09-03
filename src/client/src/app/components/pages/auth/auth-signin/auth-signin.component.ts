@@ -16,7 +16,7 @@ export class AuthSigninComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private store: Store<reducers.IUserState>,
+        private userStore: Store<reducers.IUserState>,
         private actions: Actions
     ) { }
 
@@ -28,7 +28,7 @@ export class AuthSigninComponent implements OnInit {
      * Create
      */
     private create() {
-        this.store.dispatch(new CreateUser());
+        this.userStore.dispatch(new CreateUser());
 
         const success = this.actions.pipe(
             ofType(UserActionTypes.CreateUserSuccess),

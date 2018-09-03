@@ -14,13 +14,14 @@
             <img class="w-25 mx-auto d-block" src="/assets/images/tmp_01.png">
         </div>
         <button *ngIf="!(isTicket | async)" routerLink="/ticket" type="button" class="btn btn-block btn-primary">チケット購入</button>
-        <button *ngIf="(isTicket | async)" disabled type="button" class="btn btn-block btn-primary" >購入済み</button>
+        <button *ngIf="(isTicket | async)" disabled type="button" class="btn btn-block btn-outline-primary" >購入済み</button>
     </div>
     <div class="p-3 mb-3 bg-white shadow-sm">
         <div class="mb-3">
             <img class="w-25 mx-auto d-block" src="/assets/images/tmp_01.png">
         </div>
-        <button routerLink="/goods" type="button" class="btn btn-block btn-primary">グッズ購入</button>
+        <button *ngIf="!(isGoods | async)" routerLink="/goods" type="button" class="btn btn-block btn-primary">グッズ購入</button>
+        <button *ngIf="(isGoods | async)" disabled type="button" class="btn btn-block btn-outline-primary" >購入済み</button>
     </div>
     <div class="p-3 bg-white shadow-sm">
         <div class="mb-3">
@@ -30,4 +31,4 @@
     </div>
 </div>
 
-<app-loading [show]="(isUserLoading | async) && (isPurchaseLoading | async)"></app-loading>
+<app-loading [show]="isLoading | async"></app-loading>

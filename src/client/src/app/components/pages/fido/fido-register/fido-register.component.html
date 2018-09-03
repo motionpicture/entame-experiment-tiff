@@ -1,0 +1,10 @@
+<div class="p-3 fixed-top fixed-bottom d-flex align-items-center bg-light">
+    <div class="p-3 bg-white shadow-sm w-100">
+        <div class="mb-3">
+            生体情報を登録してください。
+        </div>
+        <button (click)="onSubmit()" [disabled]="isDisabled" type="button" class="btn btn-block btn-primary">登録</button>
+    </div>
+</div>
+
+<app-loading [show]="isLoading"></app-loading>

@@ -7,11 +7,11 @@ import { goodsInfo, IGoodsInfo } from '../../../../data/goods';
     styleUrls: ['./goods-complete.component.scss']
 })
 export class GoodsCompleteComponent implements OnInit {
-    public goods: IGoodsInfo;
+    public goodsInfo: IGoodsInfo;
     constructor() { }
 
     public ngOnInit() {
-        this.goods = goodsInfo;
+        this.goodsInfo = goodsInfo;
     }
 
 }

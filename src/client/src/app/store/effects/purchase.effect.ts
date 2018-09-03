@@ -1,38 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
-import { PurchaseService } from '../../services';
+import { CoinService } from '../../services';
 import {
     PurchaseActionTypes,
-    PurchaseTicket,
-    PurchaseTicketFail,
-    PurchaseTicketSuccess
+    UseCoin,
+    UseCoinFail,
+    UseCoinSuccess
 } from '../actions';
 
 /**
- * Purchase effects
+ * UseCoin effects
  */
 @Injectable()
 export class PurchaseEffects {
 
     constructor(
         private actions: Actions,
-        private purchase: PurchaseService
+        private coin: CoinService
     ) { }
 
     /**
-     * PurchaseTicket
+     * UseCoin
      */
     @Effect()
     public purchaseTicket = this.actions.pipe(
-        ofType<PurchaseTicket>(PurchaseActionTypes.PurchaseTicket),
+        ofType<UseCoin>(PurchaseActionTypes.UseCoin),
         map(action => action.payload),
-        mergeMap(async () => {
+        mergeMap(async (payload) => {
             try {
-                this.purchase.purchaseTicket();
-                return new PurchaseTicketSuccess();
+                await this.coin.useCoinProcess({
+                    amount: payload.amount,
+                    userName: payload.userName,
+                    coinAccount: payload.coinAccount,
+                    notes: payload.notes
+                });
+                return new UseCoinSuccess({ type: payload.type });
             } catch (error) {
-                return new PurchaseTicketFail({error: error});
+                return new UseCoinFail({ error: error });
             }
         })
     );

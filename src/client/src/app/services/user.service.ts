@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { factory } from '@mocoin/api-javascript-client';
+import { environment } from '../../environments/environment';
 import { User } from '../models';
+import { CoinService } from './coin.service';
 import { MocoinService } from './mocoin.service';
 
 @Injectable({
@@ -8,7 +10,8 @@ import { MocoinService } from './mocoin.service';
 })
 export class UserService {
     constructor(
-        private mocoin: MocoinService
+        private mocoin: MocoinService,
+        private coin: CoinService
     ) { }
 
     /**
@@ -20,6 +23,22 @@ export class UserService {
 
         // ユーザーネーム取得
         const userName = this.mocoin.userName;
+
+        // 決済方法取得
+        const paymentMethods = await this.mocoin.person.searchPaymentMethods({
+            personId: 'me'
+        });
+        let paymentMethod = paymentMethods.find((method) => {
+            return (method.accountNumber === environment.BANK_ACCOUNT_NUMBER);
+        });
+        if (paymentMethod === undefined) {
+            paymentMethod = await this.mocoin.person.addPaymentMethod({
+                personId: 'me',
+                accountNumber: environment.BANK_ACCOUNT_NUMBER,
+                paymentMethodType: factory.paymentMethodType.BankAccount
+            });
+            paymentMethods.push(paymentMethod);
+        }
 
         // コイン口座取得
         const searchCoinAccountsResult = await this.mocoin.person.searchCoinAccounts({
@@ -34,6 +53,13 @@ export class UserService {
                 name: userName
             });
             coinAccounts.push(coinAccount);
+            this.coin.chargeCoinProcess({
+                userName: userName,
+                amount: 2000,
+                coinAccount: coinAccount,
+                paymentMethod: paymentMethod,
+                notes: '初回チャージ'
+            });
         }
 
         // ポイント口座取得
@@ -88,5 +114,4 @@ export class UserService {
 
         return args.user;
     }
-
 }

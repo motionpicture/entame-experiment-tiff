@@ -37,6 +37,8 @@ import {
     UserModule
 } from './modules';
 import { CoreStoreModule } from './store/core/store';
+import { FidoRegisterComponent } from './components/pages/fido/fido-register/fido-register.component';
+import { FidoRemoveComponent } from './components/pages/fido/fido-remove/fido-remove.component';
 
 // tslint:disable-next-line:no-stateless-class
 @NgModule({
@@ -63,7 +65,9 @@ import { CoreStoreModule } from './store/core/store';
         TicketCompleteComponent,
         TicketConfirmComponent,
         HistoryListComponent,
-        HistoryDetailsComponent
+        HistoryDetailsComponent,
+        FidoRegisterComponent,
+        FidoRemoveComponent
     ],
     entryComponents: [
         AlertModalComponent,

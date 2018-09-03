@@ -44,13 +44,26 @@ export function purchaseReducer(
     action: PurchaseActions
 ): IPurchaseState {
     switch (action.type) {
-        case PurchaseActionTypes.PurchaseTicket: {
+        case PurchaseActionTypes.UseCoin: {
             return { ...state, loading: true };
         }
-        case PurchaseActionTypes.PurchaseTicketSuccess: {
-            return { ...state, loading: false, ticket: true, error: null };
+        case PurchaseActionTypes.UseCoinSuccess: {
+            if (action.payload.type === 'ticket') {
+
+            }
+            switch (action.payload.type) {
+                case 'ticket': {
+                    return { ...state, loading: false, ticket: true, error: null };
+                }
+                case 'goods': {
+                    return { ...state, loading: false, goods: true, error: null };
+                }
+                default: {
+                    return { ...state, loading: false, error: null };
+                }
+            }
         }
-        case PurchaseActionTypes.PurchaseTicketFail: {
+        case PurchaseActionTypes.UseCoinFail: {
             const error = action.payload.error;
             return { ...state, loading: false, error: error };
         }
@@ -65,3 +78,4 @@ export function purchaseReducer(
  */
 export const getPurchaseLoading = (state: IPurchaseState) => state.loading;
 export const getTicket = (state: IPurchaseState) => state.ticket;
+export const getGoods = (state: IPurchaseState) => state.goods;
