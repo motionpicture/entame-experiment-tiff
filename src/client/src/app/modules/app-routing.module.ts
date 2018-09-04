@@ -15,6 +15,7 @@ import { IndexComponent } from '../components/pages/index/index.component';
 import { NotfoundComponent } from '../components/pages/notfound/notfound.component';
 import { TicketCompleteComponent } from '../components/pages/ticket/ticket-complete/ticket-complete.component';
 import { TicketConfirmComponent } from '../components/pages/ticket/ticket-confirm/ticket-confirm.component';
+import { UserResetComponent } from '../components/pages/user/user-reset/user-reset.component';
 import * as auth from '../routes/auth.route';
 import * as fido from '../routes/fido.route';
 
@@ -48,6 +49,12 @@ const appRoutes: Routes = [
                     { path: '', redirectTo: '/history/list', pathMatch: 'full' },
                     { path: 'list', component: HistoryListComponent },
                     { path: 'details', component: HistoryDetailsComponent }
+                ]
+            },
+            {
+                path: 'user', children: [
+                    { path: '', redirectTo: '/reset', pathMatch: 'full' },
+                    { path: 'reset', component: UserResetComponent }
                 ]
             },
         ]

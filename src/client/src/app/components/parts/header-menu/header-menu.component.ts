@@ -28,16 +28,12 @@ export class HeaderMenuComponent implements OnInit {
         this.openConfirm({
             title: '確認',
             body: 'ログアウトしますか？',
-            done: async () => {
-                try {
-                    await this.mocoin.signOut();
-                } catch (err) {
-                    console.error(err);
-                }
+            done: () => {
+                this.mocoin.signOut().catch((error) => {
+                    console.error(error);
+                });
             }
-
         });
-
     }
 
     private openConfirm(args: {
@@ -48,10 +44,8 @@ export class HeaderMenuComponent implements OnInit {
         const modalRef = this.modal.open(ConfirmModalComponent, {
             centered: true
         });
-        modalRef.result.then(async () => {
-            await args.done();
-        }).catch(() => {
-
+        modalRef.result.then(() => {
+            args.done();
         });
 
         modalRef.componentInstance.title = args.title;

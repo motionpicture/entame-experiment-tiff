@@ -297,7 +297,7 @@ export class NativeService {
             result = await this.reserveMessage();
         } else {
             if (args.action === QRScannerAction.Show) {
-                return { result: { text: 'test' } };
+                return { result: { text: 'browser' } };
             } else if (args.action === QRScannerAction.Hide) {
                 return { result: null };
             }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { ITicketInfo, ticketInfo } from '../../../../data/ticket';
@@ -23,8 +23,7 @@ export class TicketConfirmComponent implements OnInit {
     public isTicket: Observable<boolean>;
 
     constructor(
-        private userStore: Store<reducers.IUserState>,
-        private purchaseStore: Store<reducers.IPurchaseState>,
+        private store: Store<reducers.IState>,
         private actions: Actions,
         private router: Router,
         private modal: NgbModal
@@ -32,9 +31,9 @@ export class TicketConfirmComponent implements OnInit {
 
     public ngOnInit() {
         this.ticketInfo = ticketInfo;
-        this.user = this.userStore.select(reducers.getUser);
-        this.isLoading = this.purchaseStore.select(reducers.getPurchaseLoading);
-        this.isTicket = this.purchaseStore.select(reducers.getTicket);
+        this.user = this.store.pipe(select(reducers.getUser));
+        this.isLoading = this.store.pipe(select(reducers.getLoading));
+        this.isTicket = this.store.pipe(select(reducers.getTicket));
     }
 
     public onSubmit() {
@@ -52,7 +51,7 @@ export class TicketConfirmComponent implements OnInit {
                 return;
             }
 
-            this.purchaseStore.dispatch(new UseCoin({
+            this.store.dispatch(new UseCoin({
                 type: 'ticket',
                 userName: user.userName,
                 coinAccount: user.coinAccounts[0],
@@ -60,7 +59,7 @@ export class TicketConfirmComponent implements OnInit {
                 notes: this.ticketInfo.usedNotes
             }));
 
-        });
+        }).unsubscribe();
 
         const success = this.actions.pipe(
             ofType(PurchaseActionTypes.UseCoinSuccess),

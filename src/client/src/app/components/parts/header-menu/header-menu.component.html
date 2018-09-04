@@ -2,7 +2,8 @@
 
 <div class="menu text-white bg-dark" [class.active]="isOpen">
     <ul>
-        <li class="p-4 border-bottom" routerLink="/fido/remove"><i class="fas fa-fingerprint mr-2"></i>生体認証削除</li>
+        <li class="p-4 border-bottom" routerLink="/fido/remove" (click)="close.emit()"><i class="fas fa-fingerprint mr-2"></i>生体認証削除</li>
+        <li class="p-4 border-bottom" routerLink="/user/reset" (click)="close.emit()"><i class="fas fa-trash-alt mr-2"></i>ユーザー情報削除</li>
         <li class="p-4 border-bottom" (click)="signOut()"><i class="fas fa-sign-out-alt mr-2"></i>ログアウト</li>
     </ul>
 </div>

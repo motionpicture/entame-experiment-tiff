@@ -1,0 +1,11 @@
+<div class="p-3">
+    <div class="p-3 bg-white shadow-sm">
+        <div class="mb-3">
+            <p>ユーザー情報を初期化できます。</p>
+        </div>
+        <button (click)="onSubmit()" type="button" [disabled]="isLoading | async" class="btn btn-block btn-primary">初期化</button>
+        <button routerLink="/" type="button" class="btn btn-block btn-outline-primary">戻る</button>
+    </div>
+</div>
+
+<app-loading [show]="isLoading | async"></app-loading>

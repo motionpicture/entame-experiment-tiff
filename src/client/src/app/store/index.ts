@@ -1,2 +1,1 @@
-export * from './purchase-store.module';
-export * from './user-store.module';
+export * from './app-store.module';

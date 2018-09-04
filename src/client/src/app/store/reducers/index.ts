@@ -2,23 +2,18 @@ import {
     createFeatureSelector,
     createSelector
 } from '@ngrx/store';
-import * as purchaseReducer from './purchase.reducer';
-import * as userReducer from './user.reducer';
+import * as reducer from './reducer';
 
 /**
  * State and reducer
  */
-export { IUserState, userReducer } from './user.reducer';
-export { IPurchaseState, purchaseReducer } from './purchase.reducer';
+export { IState, reducer } from './reducer';
 
 /**
  * Selectors
  */
-export const getFeatureUserState = createFeatureSelector<userReducer.IUserState>('User');
-export const getUserLoading = createSelector(getFeatureUserState, userReducer.getUserLoading);
-export const getUser = createSelector(getFeatureUserState, userReducer.getUser);
-
-export const getFeaturePurchaseState = createFeatureSelector<purchaseReducer.IPurchaseState>('Purchase');
-export const getPurchaseLoading = createSelector(getFeaturePurchaseState, purchaseReducer.getPurchaseLoading);
-export const getTicket = createSelector(getFeaturePurchaseState, purchaseReducer.getTicket);
-export const getGoods = createSelector(getFeaturePurchaseState, purchaseReducer.getGoods);
+export const getFeatureState = createFeatureSelector<reducer.IState>('App');
+export const getLoading = createSelector(getFeatureState, reducer.getLoading);
+export const getUser = createSelector(getFeatureState, reducer.getUser);
+export const getTicket = createSelector(getFeatureState, reducer.getTicket);
+export const getGoods = createSelector(getFeatureState, reducer.getGoods);

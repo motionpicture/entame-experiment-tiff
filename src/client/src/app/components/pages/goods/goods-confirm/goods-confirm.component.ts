@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { goodsInfo, IGoodsInfo } from '../../../../data/goods';
@@ -24,8 +24,7 @@ export class GoodsConfirmComponent implements OnInit {
     public isGoods: Observable<boolean>;
 
     constructor(
-        private userStore: Store<reducers.IUserState>,
-        private purchaseStore: Store<reducers.IPurchaseState>,
+        private store: Store<reducers.IState>,
         private actions: Actions,
         private router: Router,
         private modal: NgbModal
@@ -33,9 +32,9 @@ export class GoodsConfirmComponent implements OnInit {
 
     public ngOnInit() {
         this.goodsInfo = goodsInfo;
-        this.user = this.userStore.select(reducers.getUser);
-        this.isLoading = this.purchaseStore.select(reducers.getPurchaseLoading);
-        this.isGoods = this.purchaseStore.select(reducers.getGoods);
+        this.user = this.store.pipe(select(reducers.getUser));
+        this.isLoading = this.store.pipe(select(reducers.getLoading));
+        this.isGoods = this.store.pipe(select(reducers.getGoods));
     }
 
     public onSubmit() {
@@ -53,7 +52,7 @@ export class GoodsConfirmComponent implements OnInit {
                 return;
             }
 
-            this.purchaseStore.dispatch(new UseCoin({
+            this.store.dispatch(new UseCoin({
                 type: 'goods',
                 userName: user.userName,
                 coinAccount: user.coinAccounts[0],
@@ -61,7 +60,7 @@ export class GoodsConfirmComponent implements OnInit {
                 notes: this.goodsInfo.usedNotes
             }));
 
-        });
+        }).unsubscribe();
 
         const success = this.actions.pipe(
             ofType(PurchaseActionTypes.UseCoinSuccess),

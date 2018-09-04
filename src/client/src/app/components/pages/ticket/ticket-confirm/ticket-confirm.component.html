@@ -38,13 +38,13 @@
             </div>
         </div>
         <button (click)="onSubmit()" [disabled]="isLoading | async" type="button" class="btn btn-block btn-primary">購入</button>
-        <button routerLink="/ticket" type="button" class="btn btn-block btn-outline-primary">戻る</button>
+        <button routerLink="/" type="button" class="btn btn-block btn-outline-primary">戻る</button>
     </div>
     <div *ngIf="isTicket | async" class="p-3 bg-white shadow-sm mb-3">
         <div class="mb-3">
-            すでに購入済みです
+            すでに購入済みす
         </div>
-        <button routerLink="/" type="button" class="btn btn-block btn-primary">購入履歴</button>
+        <button routerLink="/history" type="button" class="btn btn-block btn-primary">購入履歴</button>
         <button routerLink="/" type="button" class="btn btn-block btn-outline-primary">戻る</button>
     </div>
 </div>

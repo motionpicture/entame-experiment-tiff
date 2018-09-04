@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as reducers from '../../../../store/reducers';
 
@@ -13,12 +13,12 @@ export class HistoryListComponent implements OnInit {
     public isGoods: Observable<boolean>;
 
     constructor(
-        private purchaseStore: Store<reducers.IPurchaseState>
+        private store: Store<reducers.IState>
     ) { }
 
     public ngOnInit() {
-        this.isTicket = this.purchaseStore.select(reducers.getTicket);
-        this.isGoods = this.purchaseStore.select(reducers.getGoods);
+        this.isTicket = this.store.pipe(select(reducers.getTicket));
+        this.isGoods = this.store.pipe(select(reducers.getGoods));
     }
 
 }

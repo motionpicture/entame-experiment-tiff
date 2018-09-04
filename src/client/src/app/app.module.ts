@@ -14,6 +14,8 @@ import { AuthSigninComponent } from './components/pages/auth/auth-signin/auth-si
 import { AuthSignoutComponent } from './components/pages/auth/auth-signout/auth-signout.component';
 import { BaseComponent } from './components/pages/base/base.component';
 import { ErrorComponent } from './components/pages/error/error.component';
+import { FidoRegisterComponent } from './components/pages/fido/fido-register/fido-register.component';
+import { FidoRemoveComponent } from './components/pages/fido/fido-remove/fido-remove.component';
 import { GoodsCompleteComponent } from './components/pages/goods/goods-complete/goods-complete.component';
 import { GoodsConfirmComponent } from './components/pages/goods/goods-confirm/goods-confirm.component';
 import { GoodsQrcodeComponent } from './components/pages/goods/goods-qrcode/goods-qrcode.component';
@@ -23,6 +25,7 @@ import { IndexComponent } from './components/pages/index/index.component';
 import { NotfoundComponent } from './components/pages/notfound/notfound.component';
 import { TicketCompleteComponent } from './components/pages/ticket/ticket-complete/ticket-complete.component';
 import { TicketConfirmComponent } from './components/pages/ticket/ticket-confirm/ticket-confirm.component';
+import { UserResetComponent } from './components/pages/user/user-reset/user-reset.component';
 import { AlertModalComponent } from './components/parts/alert-modal/alert-modal.component';
 import { ConfirmModalComponent } from './components/parts/confirm-modal/confirm-modal.component';
 import { ContentsComponent } from './components/parts/contents/contents.component';
@@ -33,12 +36,9 @@ import { LoadingComponent } from './components/parts/loading/loading.component';
 import { NavigationComponent } from './components/parts/navigation/navigation.component';
 import {
     AppRoutingModule,
-    PurchaseModule,
-    UserModule
+    StoreModule
 } from './modules';
 import { CoreStoreModule } from './store/core/store';
-import { FidoRegisterComponent } from './components/pages/fido/fido-register/fido-register.component';
-import { FidoRemoveComponent } from './components/pages/fido/fido-remove/fido-remove.component';
 
 // tslint:disable-next-line:no-stateless-class
 @NgModule({
@@ -67,7 +67,8 @@ import { FidoRemoveComponent } from './components/pages/fido/fido-remove/fido-re
         HistoryListComponent,
         HistoryDetailsComponent,
         FidoRegisterComponent,
-        FidoRemoveComponent
+        FidoRemoveComponent,
+        UserResetComponent
     ],
     entryComponents: [
         AlertModalComponent,
@@ -79,8 +80,7 @@ import { FidoRemoveComponent } from './components/pages/fido/fido-remove/fido-re
         AppRoutingModule,
         ReactiveFormsModule,
         FormsModule,
-        UserModule,
-        PurchaseModule,
+        StoreModule,
         CoreStoreModule,
         NgbModule.forRoot()
     ],

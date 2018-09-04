@@ -11,6 +11,9 @@ export enum UserActionTypes {
     UpdateUser = '[User] Update',
     UpdateUserSuccess = '[User] Update Success',
     UpdateUserFail = '[User] Update Fail',
+    ResetUser = '[User] Reset',
+    ResetUserSuccess = '[User] Reset Success',
+    ResetUserFail = '[User] Reset Fail',
 }
 
 /**
@@ -61,6 +64,31 @@ export class UpdateUserFail implements Action {
     constructor(public payload: { error: Error }) { }
 }
 
+
+/**
+ * ResetUser
+ */
+export class ResetUser implements Action {
+    public readonly type = UserActionTypes.ResetUser;
+    constructor(public payload: { user: User }) { }
+}
+
+/**
+ * ResetUserSuccess
+ */
+export class ResetUserSuccess implements Action {
+    public readonly type = UserActionTypes.ResetUserSuccess;
+    constructor(public payload: { user: User }) { }
+}
+
+/**
+ * ResetUserFail
+ */
+export class ResetUserFail implements Action {
+    public readonly type = UserActionTypes.ResetUserFail;
+    constructor(public payload: { error: Error }) { }
+}
+
 /**
  * Actions
  */
@@ -70,4 +98,7 @@ export type UserActions =
     | CreateUserFail
     | UpdateUser
     | UpdateUserSuccess
-    | UpdateUserFail;
+    | UpdateUserFail
+    | ResetUser
+    | ResetUserSuccess
+    | ResetUserFail;

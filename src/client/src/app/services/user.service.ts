@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { User } from '../models';
 import { CoinService } from './coin.service';
 import { MocoinService } from './mocoin.service';
+import { UtilService } from './util.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,8 @@ import { MocoinService } from './mocoin.service';
 export class UserService {
     constructor(
         private mocoin: MocoinService,
-        private coin: CoinService
+        private coin: CoinService,
+        private util: UtilService
     ) { }
 
     /**
@@ -76,6 +78,8 @@ export class UserService {
             });
             pointAccounts.push(pointAccount);
         }
+        const time = 10000;
+        await this.util.sleep(time);
 
         return new User({
             userName: userName,
@@ -111,6 +115,43 @@ export class UserService {
 
         args.user.coinAccounts = coinAccounts;
         args.user.pointAccounts = pointAccounts;
+
+        return args.user;
+    }
+
+    public async resetUser(args: { user: User }) {
+        await this.mocoin.getServices();
+
+        // コイン口座取得
+        const searchCoinAccountsResult = await this.mocoin.person.searchCoinAccounts({
+            personId: 'me'
+        });
+        const coinAccounts = searchCoinAccountsResult.filter((account) => {
+            return (account.status === factory.pecorino.accountStatusType.Opened);
+        });
+        if (coinAccounts.length !== 0) {
+            await this.mocoin.person.closeCoinAccount({
+                personId: 'me',
+                accountNumber: coinAccounts[0].accountNumber
+            });
+        }
+
+        // ポイント口座取得
+        const searchPointAccountsResult = await this.mocoin.person.searchPointAccounts({
+            personId: 'me'
+        });
+        const pointAccounts = searchPointAccountsResult.filter((account) => {
+            return (account.status === factory.pecorino.accountStatusType.Opened);
+        });
+        if (pointAccounts.length !== 0) {
+            await this.mocoin.person.closePointAccount({
+                personId: 'me',
+                accountNumber: pointAccounts[0].accountNumber
+            });
+        }
+
+        args.user.coinAccounts = [];
+        args.user.pointAccounts = [];
 
         return args.user;
     }

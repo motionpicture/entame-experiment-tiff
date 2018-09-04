@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { User } from '../../../models';
@@ -23,17 +23,16 @@ export class IndexComponent implements OnInit {
     public isGoods: Observable<boolean>;
 
     constructor(
-        private userStore: Store<reducers.IUserState>,
-        private purchaseStore: Store<reducers.IPurchaseState>,
+        private store: Store<reducers.IState>,
         private actions: Actions,
         private router: Router
     ) { }
 
     public async ngOnInit() {
-        this.isLoading = this.userStore.select(reducers.getUserLoading);
-        this.user = this.userStore.select(reducers.getUser);
-        this.isTicket = this.purchaseStore.select(reducers.getTicket);
-        this.isGoods = this.purchaseStore.select(reducers.getGoods);
+        this.isLoading = this.store.pipe(select(reducers.getLoading));
+        this.user = this.store.pipe(select(reducers.getUser));
+        this.isTicket = this.store.pipe(select(reducers.getTicket));
+        this.isGoods = this.store.pipe(select(reducers.getGoods));
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);
@@ -47,7 +46,7 @@ export class IndexComponent implements OnInit {
      * update
      */
     public update(args: { user: User }) {
-        this.userStore.dispatch(new UpdateUser({ user: args.user }));
+        this.store.dispatch(new UpdateUser({ user: args.user }));
 
         const success = this.actions.pipe(
             ofType(UserActionTypes.UpdateUserSuccess),
