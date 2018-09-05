@@ -38,8 +38,8 @@ function getInitialState(): IState {
         loading: data.loading,
         error: data.error,
         user: (data.user === null) ? null : new User(data.user),
-        ticket: false,
-        goods: false
+        ticket: data.ticket,
+        goods: data.goods
 
     };
 }

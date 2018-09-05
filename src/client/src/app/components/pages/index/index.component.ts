@@ -17,7 +17,6 @@ import * as reducers from '../../../store/reducers';
     styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-    public isLoading: Observable<boolean>;
     public user: Observable<User | null>;
     public isTicket: Observable<boolean>;
     public isGoods: Observable<boolean>;
@@ -29,7 +28,6 @@ export class IndexComponent implements OnInit {
     ) { }
 
     public async ngOnInit() {
-        this.isLoading = this.store.pipe(select(reducers.getLoading));
         this.user = this.store.pipe(select(reducers.getUser));
         this.isTicket = this.store.pipe(select(reducers.getTicket));
         this.isGoods = this.store.pipe(select(reducers.getGoods));

@@ -21,7 +21,6 @@ import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.comp
 export class TicketConfirmComponent implements OnInit {
     public ticketInfo: ITicketInfo;
     public user: Observable<User | null>;
-    public isLoading: Observable<boolean>;
     public isTicket: Observable<boolean>;
 
     constructor(
@@ -35,7 +34,6 @@ export class TicketConfirmComponent implements OnInit {
     public ngOnInit() {
         this.ticketInfo = ticketInfo;
         this.user = this.store.pipe(select(reducers.getUser));
-        this.isLoading = this.store.pipe(select(reducers.getLoading));
         this.isTicket = this.store.pipe(select(reducers.getTicket));
     }
 
