@@ -3999,7 +3999,7 @@ __webpack_require__.r(__webpack_exports__);
  * @suppress {suspiciousCode,uselessCode,missingProperties,missingOverride,checkTypes}
  * tslint:disable
  */ 
-var styles = [".cover[_ngcontent-%COMP%] {\n  opacity: 0;\n  background-color: rgba(0, 0, 0, 0.7);\n  visibility: visible;\n  -webkit-animation: fadein 0.4s both;\n          animation: fadein 0.4s both;\n  display: none; }\n  .cover.active[_ngcontent-%COMP%] {\n    display: block;\n    opacity: 1;\n    visibility: visible; }\n  .loading[_ngcontent-%COMP%] {\n  opacity: 0;\n  visibility: hidden;\n  align-items: center;\n  justify-content: center; }\n  .loading.active[_ngcontent-%COMP%] {\n    display: flex;\n    opacity: 1;\n    visibility: visible; }\n  @-webkit-keyframes loading {\n  30% {\n    -webkit-transform: scaleY(2);\n            transform: scaleY(2); } }\n  @keyframes loading {\n  30% {\n    -webkit-transform: scaleY(2);\n            transform: scaleY(2); } }\n  .loader[_ngcontent-%COMP%], .loader[_ngcontent-%COMP%]:after {\n  border-radius: 50%;\n  width: 90px;\n  height: 90px; }\n  .loader[_ngcontent-%COMP%] {\n  margin: 60px auto;\n  position: relative;\n  text-indent: -9999em;\n  border: 3px solid rgba(255, 255, 255, 0.2);\n  border-left-color: #FFF;\n  -webkit-transform: translateZ(0);\n          transform: translateZ(0);\n  -webkit-animation: load8 1.1s infinite linear;\n          animation: load8 1.1s infinite linear; }\n  @-webkit-keyframes load8 {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }\n  @keyframes load8 {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }"];
+var styles = [".cover[_ngcontent-%COMP%] {\n  opacity: 0;\n  background-color: rgba(0, 0, 0, 0.7);\n  visibility: visible;\n  -webkit-animation: fadein 0.4s both;\n          animation: fadein 0.4s both;\n  display: none;\n  z-index: 2000; }\n  .cover.active[_ngcontent-%COMP%] {\n    display: block;\n    opacity: 1;\n    visibility: visible; }\n  .loading[_ngcontent-%COMP%] {\n  opacity: 0;\n  visibility: hidden;\n  align-items: center;\n  justify-content: center;\n  z-index: 2000; }\n  .loading.active[_ngcontent-%COMP%] {\n    display: flex;\n    opacity: 1;\n    visibility: visible; }\n  @-webkit-keyframes loading {\n  30% {\n    -webkit-transform: scaleY(2);\n            transform: scaleY(2); } }\n  @keyframes loading {\n  30% {\n    -webkit-transform: scaleY(2);\n            transform: scaleY(2); } }\n  .loader[_ngcontent-%COMP%], .loader[_ngcontent-%COMP%]:after {\n  border-radius: 50%;\n  width: 90px;\n  height: 90px; }\n  .loader[_ngcontent-%COMP%] {\n  margin: 60px auto;\n  position: relative;\n  text-indent: -9999em;\n  border: 3px solid rgba(255, 255, 255, 0.2);\n  border-left-color: #FFF;\n  -webkit-transform: translateZ(0);\n          transform: translateZ(0);\n  -webkit-animation: load8 1.1s infinite linear;\n          animation: load8 1.1s infinite linear; }\n  @-webkit-keyframes load8 {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }\n  @keyframes load8 {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }"];
 
 
 
@@ -4476,7 +4476,7 @@ var CoinService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.mocoin.getServices()];
                     case 1:
                         _a.sent();
-                        transactionTime = 15;
+                        transactionTime = 5;
                         return [4 /*yield*/, this.mocoin.transaction.withdrawCoin.start({
                                 expires: moment__WEBPACK_IMPORTED_MODULE_1__().add(transactionTime, 'minutes').toDate(),
                                 agent: {
@@ -4516,7 +4516,7 @@ var CoinService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.mocoin.getServices()];
                     case 1:
                         _a.sent();
-                        transactionTime = 15;
+                        transactionTime = 5;
                         return [4 /*yield*/, this.mocoin.transaction.buyCoin.start({
                                 expires: moment__WEBPACK_IMPORTED_MODULE_1__().add(transactionTime, 'minutes').toDate(),
                                 agent: {
