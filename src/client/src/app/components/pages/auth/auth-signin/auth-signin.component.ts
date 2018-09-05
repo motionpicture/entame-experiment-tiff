@@ -4,6 +4,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
+import { MocoinService } from '../../../../services';
 import { CreateUser, UserActionTypes } from '../../../../store/actions';
 import * as reducers from '../../../../store/reducers';
 
@@ -17,7 +18,8 @@ export class AuthSigninComponent implements OnInit {
     constructor(
         private router: Router,
         private store: Store<reducers.IState>,
-        private actions: Actions
+        private actions: Actions,
+        private mocoin: MocoinService
     ) { }
 
     public ngOnInit() {
@@ -42,6 +44,7 @@ export class AuthSigninComponent implements OnInit {
             ofType(UserActionTypes.CreateUserFail),
             tap(() => {
                 // エラー時の処理
+                this.mocoin.signOut();
             })
         );
         race(success, fail).pipe(take(1)).subscribe();

@@ -73,10 +73,7 @@ export class FidoRemoveComponent implements OnInit {
         } catch (error) {
             this.isLoading = false;
             this.isDisabled = false;
-            this.openAlert({
-                title: 'エラー',
-                body: error.message
-            });
+            this.openAlert({ title: 'エラー', body: error.message });
         }
     }
 

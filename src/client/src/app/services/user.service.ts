@@ -62,6 +62,8 @@ export class UserService {
                 paymentMethod: paymentMethod,
                 notes: '初回チャージ'
             });
+            const time = 10000;
+            await this.util.sleep(time);
         }
 
         // ポイント口座取得
@@ -78,8 +80,6 @@ export class UserService {
             });
             pointAccounts.push(pointAccount);
         }
-        const time = 10000;
-        await this.util.sleep(time);
 
         return new User({
             userName: userName,
@@ -101,7 +101,6 @@ export class UserService {
         if (coinAccounts.length === 0) {
             throw new Error('coinAccounts not found');
         }
-
         // ポイント口座取得
         const searchPointAccountsResult = await this.mocoin.person.searchPointAccounts({
             personId: 'me'
@@ -129,10 +128,10 @@ export class UserService {
         const coinAccounts = searchCoinAccountsResult.filter((account) => {
             return (account.status === factory.pecorino.accountStatusType.Opened);
         });
-        if (coinAccounts.length !== 0) {
+        for (const coinAccount of coinAccounts) {
             await this.mocoin.person.closeCoinAccount({
                 personId: 'me',
-                accountNumber: coinAccounts[0].accountNumber
+                accountNumber: coinAccount.accountNumber
             });
         }
 
@@ -143,10 +142,10 @@ export class UserService {
         const pointAccounts = searchPointAccountsResult.filter((account) => {
             return (account.status === factory.pecorino.accountStatusType.Opened);
         });
-        if (pointAccounts.length !== 0) {
+        for (const pointAccount of pointAccounts) {
             await this.mocoin.person.closePointAccount({
                 personId: 'me',
-                accountNumber: pointAccounts[0].accountNumber
+                accountNumber: pointAccount.accountNumber
             });
         }
 

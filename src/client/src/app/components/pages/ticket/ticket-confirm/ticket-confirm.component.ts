@@ -5,8 +5,10 @@ import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
+import { environment } from '../../../../../environments/environment';
 import { ITicketInfo, ticketInfo } from '../../../../data/ticket';
 import { User } from '../../../../models';
+import { FidoAction, NativeService } from '../../../../services/native';
 import { PurchaseActionTypes, UseCoin } from '../../../../store/actions';
 import * as reducers from '../../../../store/reducers';
 import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.component';
@@ -26,7 +28,8 @@ export class TicketConfirmComponent implements OnInit {
         private store: Store<reducers.IState>,
         private actions: Actions,
         private router: Router,
-        private modal: NgbModal
+        private modal: NgbModal,
+        private native: NativeService
     ) { }
 
     public ngOnInit() {
@@ -36,7 +39,23 @@ export class TicketConfirmComponent implements OnInit {
         this.isTicket = this.store.pipe(select(reducers.getTicket));
     }
 
-    public onSubmit() {
+    public async onSubmit() {
+        try {
+            const device = await this.native.device();
+            if (device === null) {
+                throw new Error('device is null');
+            }
+            const authenticationResult = await this.native.fido({
+                action: FidoAction.Authentication,
+                user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
+            });
+            if (!authenticationResult.isSuccess) {
+                throw Error(authenticationResult.error);
+            }
+        } catch (error) {
+            this.openAlert({ title: 'エラー', body: error.message });
+            return;
+        }
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);
@@ -44,10 +63,7 @@ export class TicketConfirmComponent implements OnInit {
             }
             const user = result;
             if (user.coinAccounts[0].availableBalance < this.ticketInfo.amount) {
-                this.openAlert({
-                    title: 'エラー',
-                    body: 'コインが不足しています'
-                });
+                this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
                 return;
             }
 

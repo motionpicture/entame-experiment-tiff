@@ -41,10 +41,7 @@ export class GoodsQrcodeComponent implements OnInit {
             const qrcode = '12345678';
             if (scanResult.result.text !== qrcode
                 && scanResult.result.text !== 'browser') {
-                this.openAlert({
-                    title: 'エラー',
-                    body: 'QRコードが正しくありません。'
-                });
+                this.openAlert({ title: 'エラー', body: 'QRコードが正しくありません。' });
                 return;
             }
             this.router.navigate(['/goods/confirm']);
