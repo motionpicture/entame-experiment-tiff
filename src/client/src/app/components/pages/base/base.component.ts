@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as reducers from '../../../store/reducers';
@@ -8,14 +8,23 @@ import * as reducers from '../../../store/reducers';
     templateUrl: './base.component.html',
     styleUrls: ['./base.component.scss']
 })
-export class BaseComponent implements OnInit {
+export class BaseComponent implements OnInit, OnDestroy, AfterViewChecked {
     public isLoading: Observable<boolean>;
     constructor(
-        private store: Store<reducers.IState>
+        private store: Store<reducers.IState>,
+        private changeDetectorRef: ChangeDetectorRef
     ) { }
 
     public ngOnInit() {
         this.isLoading = this.store.pipe(select(reducers.getLoading));
+    }
+
+    public ngAfterViewChecked() {
+        this.changeDetectorRef.detectChanges();
+    }
+
+    public ngOnDestroy() {
+        this.isLoading.subscribe().unsubscribe();
     }
 
 }

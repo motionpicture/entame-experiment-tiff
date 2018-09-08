@@ -24,6 +24,7 @@ export class GoodsConfirmComponent implements OnInit {
     public user: Observable<User | null>;
     public isLoading: Observable<boolean>;
     public isGoods: Observable<boolean>;
+    public error: Observable<Error | null>;
 
     constructor(
         private store: Store<reducers.IState>,

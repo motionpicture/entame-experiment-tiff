@@ -1,13 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { CoinService } from '../../services';
 import { UserService } from '../../services';
+import { FidoAction, NativeService } from '../../services/native';
 import {
+    AuthFido,
+    AuthFidoFail,
+    AuthFidoSuccess,
     CreateUser,
     CreateUserFail,
     CreateUserSuccess,
+    DeleteFido,
+    DeleteFidoFail,
+    DeleteFidoSuccess,
+    FidoActionTypes,
+    LoadFido,
+    LoadFidoFail,
+    LoadFidoSuccess,
     PurchaseActionTypes,
+    RegisterFido,
+    RegisterFidoFail,
+    RegisterFidoSuccess,
     ResetUser,
     ResetUserFail,
     ResetUserSuccess,
@@ -29,7 +44,8 @@ export class Effects {
     constructor(
         private actions: Actions,
         private coin: CoinService,
-        private user: UserService
+        private user: UserService,
+        private native: NativeService
     ) { }
 
     /**
@@ -101,6 +117,123 @@ export class Effects {
                 return new ResetUserSuccess({ user: user });
             } catch (error) {
                 return new ResetUserFail({ error: error });
+            }
+        })
+    );
+
+    /**
+     * RegisterFido
+     */
+    @Effect()
+    public registerFido = this.actions.pipe(
+        ofType<RegisterFido>(FidoActionTypes.RegisterFido),
+        map(action => action.payload),
+        mergeMap(async () => {
+            try {
+                const device = await this.native.device();
+                if (device === null) {
+                    throw new Error('device is null');
+                }
+                const registerResult = await this.native.fido({
+                    action: FidoAction.Register,
+                    user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
+                });
+                if (!registerResult.isSuccess) {
+                    throw Error(registerResult.error);
+                }
+                return new RegisterFidoSuccess();
+            } catch (error) {
+                return new RegisterFidoFail({ error: error });
+            }
+        })
+    );
+
+    /**
+     * LoadFido
+     */
+    @Effect()
+    public loadFido = this.actions.pipe(
+        ofType<LoadFido>(FidoActionTypes.LoadFido),
+        map(action => action.payload),
+        mergeMap(async () => {
+            try {
+                const device = await this.native.device();
+                if (device === null) {
+                    throw new Error('device is null');
+                }
+                const registerListResult = await this.native.fido({
+                    action: FidoAction.RegisterList,
+                    user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
+                });
+                if (!registerListResult.isSuccess) {
+                    throw new Error('registerList fail');
+                }
+                return new LoadFidoSuccess();
+            } catch (error) {
+                return new LoadFidoFail({ error: error });
+            }
+        })
+    );
+
+    /**
+     * AuthFido
+     */
+    @Effect()
+    public authFido = this.actions.pipe(
+        ofType<AuthFido>(FidoActionTypes.AuthFido),
+        map(action => action.payload),
+        mergeMap(async () => {
+            try {
+                const device = await this.native.device();
+                if (device === null) {
+                    throw new Error('device is null');
+                }
+                const authenticationResult = await this.native.fido({
+                    action: FidoAction.Authentication,
+                    user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
+                });
+                if (!authenticationResult.isSuccess) {
+                    throw Error(authenticationResult.error);
+                }
+                return new AuthFidoSuccess();
+            } catch (error) {
+                return new AuthFidoFail({ error: error });
+            }
+        })
+    );
+
+    /**
+     * DeleteFido
+     */
+    @Effect()
+    public deleteFido = this.actions.pipe(
+        ofType<DeleteFido>(FidoActionTypes.DeleteFido),
+        map(action => action.payload),
+        mergeMap(async () => {
+            try {
+                const device = await this.native.device();
+                if (device === null) {
+                    throw new Error('device is null');
+                }
+                const registerListResult = await this.native.fido({
+                    action: FidoAction.RegisterList,
+                    user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
+                });
+                if (!registerListResult.isSuccess) {
+                    throw new Error('registerList fail');
+                }
+                const registerList = registerListResult.result;
+                const removeResult = await this.native.fido({
+                    action: FidoAction.Remove,
+                    user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`,
+                    handle: registerList[0].handle
+                });
+                if (!removeResult.isSuccess) {
+                    throw Error(removeResult.error);
+                }
+                return new DeleteFidoSuccess();
+            } catch (error) {
+                return new DeleteFidoFail({ error: error });
             }
         })
     );

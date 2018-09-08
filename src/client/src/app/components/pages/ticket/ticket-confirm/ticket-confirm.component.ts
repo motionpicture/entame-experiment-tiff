@@ -5,11 +5,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { Observable, race } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
-import { environment } from '../../../../../environments/environment';
 import { ITicketInfo, ticketInfo } from '../../../../data/ticket';
 import { User } from '../../../../models';
-import { FidoAction, NativeService } from '../../../../services/native';
-import { PurchaseActionTypes, UseCoin } from '../../../../store/actions';
+import { AuthFido, FidoActionTypes, PurchaseActionTypes, UseCoin } from '../../../../store/actions';
 import * as reducers from '../../../../store/reducers';
 import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.component';
 
@@ -22,38 +20,49 @@ export class TicketConfirmComponent implements OnInit {
     public ticketInfo: ITicketInfo;
     public user: Observable<User | null>;
     public isTicket: Observable<boolean>;
+    public error: Observable<Error | null>;
 
     constructor(
         private store: Store<reducers.IState>,
         private actions: Actions,
         private router: Router,
-        private modal: NgbModal,
-        private native: NativeService
+        private modal: NgbModal
     ) { }
 
     public ngOnInit() {
         this.ticketInfo = ticketInfo;
         this.user = this.store.pipe(select(reducers.getUser));
         this.isTicket = this.store.pipe(select(reducers.getTicket));
+        this.error = this.store.pipe(select(reducers.getError));
     }
 
-    public async onSubmit() {
-        try {
-            const device = await this.native.device();
-            if (device === null) {
-                throw new Error('device is null');
-            }
-            const authenticationResult = await this.native.fido({
-                action: FidoAction.Authentication,
-                user: `${environment.APP_NAME}-${environment.ENV}-${device.uuid}`
-            });
-            if (!authenticationResult.isSuccess) {
-                throw Error(authenticationResult.error);
-            }
-        } catch (error) {
-            this.openAlert({ title: 'エラー', body: error.message });
-            return;
-        }
+    public onSubmit() {
+        this.authFido();
+    }
+
+    private authFido() {
+        this.store.dispatch(new AuthFido());
+        const success = this.actions.pipe(
+            ofType(FidoActionTypes.AuthFidoSuccess),
+            tap(() => {
+                // 成功時の処理
+                this.useCoin();
+            })
+        );
+
+        const fail = this.actions.pipe(
+            ofType(FidoActionTypes.AuthFidoFail),
+            tap(() => {
+                // エラー時の処理
+                this.error.subscribe((error) => {
+                    this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
+                }).unsubscribe();
+            })
+        );
+        race(success, fail).pipe(take(1)).subscribe();
+    }
+
+    private useCoin() {
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);
@@ -64,7 +73,6 @@ export class TicketConfirmComponent implements OnInit {
                 this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
                 return;
             }
-
             this.store.dispatch(new UseCoin({
                 type: 'ticket',
                 userName: user.userName,
@@ -72,9 +80,7 @@ export class TicketConfirmComponent implements OnInit {
                 amount: this.ticketInfo.amount,
                 notes: this.ticketInfo.usedNotes
             }));
-
         }).unsubscribe();
-
         const success = this.actions.pipe(
             ofType(PurchaseActionTypes.UseCoinSuccess),
             tap(() => {
@@ -82,7 +88,6 @@ export class TicketConfirmComponent implements OnInit {
                 this.router.navigate(['/ticket/complete']);
             })
         );
-
         const fail = this.actions.pipe(
             ofType(PurchaseActionTypes.UseCoinFail),
             tap(() => {

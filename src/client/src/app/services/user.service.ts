@@ -54,14 +54,20 @@ export class UserService {
                 personId: 'me',
                 name: userName
             });
-            coinAccounts.push(coinAccount);
-            this.coin.chargeCoinProcess({
+            await this.coin.chargeCoinProcess({
                 userName: userName,
                 amount: 2000,
                 coinAccount: coinAccount,
                 paymentMethod: paymentMethod,
                 notes: '初回チャージ'
+            }).catch(async () => {
+                await this.mocoin.person.closeCoinAccount({
+                    personId: 'me',
+                    accountNumber: coinAccount.accountNumber
+                });
+                throw new Error('chargeCoinProcess Fail');
             });
+            coinAccounts.push(coinAccount);
             const time = 10000;
             await this.util.sleep(time);
         }

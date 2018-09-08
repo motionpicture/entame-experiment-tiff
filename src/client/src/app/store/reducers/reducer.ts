@@ -1,5 +1,7 @@
 import { User } from '../../models';
 import {
+    FidoActions,
+    FidoActionTypes,
     PurchaseActions,
     PurchaseActionTypes,
     UserActions,
@@ -51,7 +53,7 @@ function getInitialState(): IState {
  */
 export function reducer(
     state = getInitialState(),
-    action: PurchaseActions | UserActions
+    action: PurchaseActions | UserActions | FidoActions
 ): IState {
     switch (action.type) {
         case PurchaseActionTypes.UseCoin: {
@@ -110,6 +112,46 @@ export function reducer(
             const error = action.payload.error;
             return { ...state, loading: false, error: error };
         }
+        case FidoActionTypes.RegisterFido: {
+            return { ...state, loading: true };
+        }
+        case FidoActionTypes.RegisterFidoSuccess: {
+            return { ...state, loading: false, error: null };
+        }
+        case FidoActionTypes.RegisterFidoFail: {
+            const error = action.payload.error;
+            return { ...state, loading: false, error: error };
+        }
+        case FidoActionTypes.LoadFido: {
+            return { ...state, loading: true };
+        }
+        case FidoActionTypes.LoadFidoSuccess: {
+            return { ...state, loading: false, error: null };
+        }
+        case FidoActionTypes.LoadFidoFail: {
+            const error = action.payload.error;
+            return { ...state, loading: false, error: error };
+        }
+        case FidoActionTypes.AuthFido: {
+            return { ...state, loading: true };
+        }
+        case FidoActionTypes.AuthFidoSuccess: {
+            return { ...state, loading: false, error: null };
+        }
+        case FidoActionTypes.AuthFidoFail: {
+            const error = action.payload.error;
+            return { ...state, loading: false, error: error };
+        }
+        case FidoActionTypes.DeleteFido: {
+            return { ...state, loading: true };
+        }
+        case FidoActionTypes.DeleteFidoSuccess: {
+            return { ...state, loading: false, error: null };
+        }
+        case FidoActionTypes.DeleteFidoFail: {
+            const error = action.payload.error;
+            return { ...state, loading: false, error: error };
+        }
         default: {
             return state;
         }
@@ -123,3 +165,4 @@ export const getLoading = (state: IState) => state.loading;
 export const getUser = (state: IState) => state.user;
 export const getTicket = (state: IState) => state.ticket;
 export const getGoods = (state: IState) => state.goods;
+export const getError = (state: IState) => state.error;

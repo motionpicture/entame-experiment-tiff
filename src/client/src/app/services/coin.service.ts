@@ -22,7 +22,7 @@ export class CoinService {
         notes: string;
     }) {
         await this.mocoin.getServices();
-        const transactionTime = 5;
+        const transactionTime = 1;
         const transaction = await this.mocoin.transaction.withdrawCoin.start({
             expires: moment().add(transactionTime, 'minutes').toDate(),
             agent: {
@@ -55,7 +55,7 @@ export class CoinService {
         notes: string;
     }) {
         await this.mocoin.getServices();
-        const transactionTime = 5;
+        const transactionTime = 1;
         const transaction = await this.mocoin.transaction.buyCoin.start({
             expires: moment().add(transactionTime, 'minutes').toDate(),
             agent: {

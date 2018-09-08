@@ -17,3 +17,4 @@ export const getLoading = createSelector(getFeatureState, reducer.getLoading);
 export const getUser = createSelector(getFeatureState, reducer.getUser);
 export const getTicket = createSelector(getFeatureState, reducer.getTicket);
 export const getGoods = createSelector(getFeatureState, reducer.getGoods);
+export const getError = createSelector(getFeatureState, reducer.getError);
