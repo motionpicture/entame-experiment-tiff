@@ -667,9 +667,13 @@ var AuthGuardService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FidoGuardService", function() { return FidoGuardService; });
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/native */ "./src/app/services/native.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store/actions */ "./src/app/store/actions/index.ts");
+/* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../store/reducers */ "./src/app/store/reducers/index.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -711,45 +715,38 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
+
+
+
+
 var FidoGuardService = /** @class */ (function () {
-    function FidoGuardService(router, native) {
+    function FidoGuardService(router, store, actions) {
         this.router = router;
-        this.native = native;
+        this.store = store;
+        this.actions = actions;
     }
     /**
      * 認証
      * @method canActivate
-     * @returns {Promise<boolean>}
      */
     FidoGuardService.prototype.canActivate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var device, registerListResult, err_1;
+            var error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.native.device()];
+                        this.error = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_6__["getError"]));
+                        _a.label = 1;
                     case 1:
-                        device = _a.sent();
-                        if (device === null) {
-                            throw new Error('device is null');
-                        }
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_2__["FidoAction"].RegisterList,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].ENV + "-" + device.uuid
-                            })];
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.loadFido()];
                     case 2:
-                        registerListResult = _a.sent();
-                        if (!registerListResult.isSuccess) {
-                            throw new Error('registerList fail');
-                        }
-                        if (registerListResult.result.length === 0) {
-                            throw new Error('registerList not found');
-                        }
+                        _a.sent();
                         return [2 /*return*/, true];
                     case 3:
-                        err_1 = _a.sent();
-                        console.log('canActivate', err_1);
+                        error_1 = _a.sent();
+                        console.log('canActivate', error_1);
                         this.router.navigate(['/fido/register']);
                         return [2 /*return*/, false];
                     case 4: return [2 /*return*/];
@@ -757,7 +754,24 @@ var FidoGuardService = /** @class */ (function () {
             });
         });
     };
-    FidoGuardService.ngInjectableDef = _angular_core__WEBPACK_IMPORTED_MODULE_3__["defineInjectable"]({ factory: function FidoGuardService_Factory() { return new FidoGuardService(_angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"](_angular_router__WEBPACK_IMPORTED_MODULE_0__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["inject"](_services_native__WEBPACK_IMPORTED_MODULE_2__["NativeService"])); }, token: FidoGuardService, providedIn: "root" });
+    FidoGuardService.prototype.loadFido = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_5__["LoadFido"]());
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_5__["FidoActionTypes"].LoadFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_5__["FidoActionTypes"].LoadFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1)).subscribe();
+                    })];
+            });
+        });
+    };
+    FidoGuardService.ngInjectableDef = _angular_core__WEBPACK_IMPORTED_MODULE_7__["defineInjectable"]({ factory: function FidoGuardService_Factory() { return new FidoGuardService(_angular_core__WEBPACK_IMPORTED_MODULE_7__["inject"](_angular_router__WEBPACK_IMPORTED_MODULE_0__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["inject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["inject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"])); }, token: FidoGuardService, providedIn: "root" });
     return FidoGuardService;
 }());
 
@@ -1400,12 +1414,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FidoRegisterComponentNgFactory", function() { return FidoRegisterComponentNgFactory; });
 /* harmony import */ var _fido_register_component_scss_shim_ngstyle__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fido-register.component.scss.shim.ngstyle */ "./src/app/components/pages/fido/fido-register/fido-register.component.scss.shim.ngstyle.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../parts/loading/loading.component.ngfactory */ "./src/app/components/parts/loading/loading.component.ngfactory.js");
-/* harmony import */ var _parts_loading_loading_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../parts/loading/loading.component */ "./src/app/components/parts/loading/loading.component.ts");
-/* harmony import */ var _fido_register_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fido-register.component */ "./src/app/components/pages/fido/fido-register/fido-register.component.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../parts/loading/loading.component.ngfactory */ "./src/app/components/parts/loading/loading.component.ngfactory.js");
+/* harmony import */ var _parts_loading_loading_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../parts/loading/loading.component */ "./src/app/components/parts/loading/loading.component.ts");
+/* harmony import */ var _fido_register_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./fido-register.component */ "./src/app/components/pages/fido/fido-register/fido-register.component.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap/modal/modal */ "../../node_modules/@ng-bootstrap/ng-bootstrap/modal/modal.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap/modal/modal */ "../../node_modules/@ng-bootstrap/ng-bootstrap/modal/modal.js");
 /**
  * @fileoverview This file was generated by the Angular template compiler. Do not edit.
  *
@@ -1420,15 +1436,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var styles_FidoRegisterComponent = [_fido_register_component_scss_shim_ngstyle__WEBPACK_IMPORTED_MODULE_0__["styles"]];
 var RenderType_FidoRegisterComponent = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵcrt"]({ encapsulation: 0, styles: styles_FidoRegisterComponent, data: {} });
 
-function View_FidoRegisterComponent_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 5, "div", [["class", "p-3 fixed-top fixed-bottom d-flex align-items-center bg-light"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](1, 0, null, null, 4, "div", [["class", "p-3 bg-white shadow-sm w-100"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](2, 0, null, null, 1, "div", [["class", "mb-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, [" \u751F\u4F53\u60C5\u5831\u3092\u767B\u9332\u3057\u3066\u304F\u3060\u3055\u3044\u3002 "])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](4, 0, null, null, 1, "button", [["class", "btn btn-block btn-primary"], ["type", "button"]], [[8, "disabled", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_FidoRegisterComponent_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 6, "div", [["class", "p-3 fixed-top fixed-bottom d-flex align-items-center bg-light"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](1, 0, null, null, 5, "div", [["class", "p-3 bg-white shadow-sm w-100"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](2, 0, null, null, 1, "div", [["class", "mb-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, [" \u751F\u4F53\u60C5\u5831\u3092\u767B\u9332\u3057\u3066\u304F\u3060\u3055\u3044\u3002 "])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](4, 0, null, null, 2, "button", [["class", "btn btn-block btn-primary"], ["type", "button"]], [[8, "disabled", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onSubmit() !== false);
         ad = (pd_0 && ad);
-    } return ad; }, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, ["\u767B\u9332"])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](6, 0, null, null, 1, "app-loading", [], null, null, null, _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_2__["View_LoadingComponent_0"], _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_2__["RenderType_LoadingComponent"])), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](7, 114688, null, 0, _parts_loading_loading_component__WEBPACK_IMPORTED_MODULE_3__["LoadingComponent"], [], { show: [0, "show"] }, null)], function (_ck, _v) { var _co = _v.component; var currVal_1 = _co.isLoading; _ck(_v, 7, 0, currVal_1); }, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.isDisabled; _ck(_v, 4, 0, currVal_0); }); }
-function View_FidoRegisterComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-fido-register", [], null, null, null, View_FidoRegisterComponent_0, RenderType_FidoRegisterComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _fido_register_component__WEBPACK_IMPORTED_MODULE_4__["FidoRegisterComponent"], [_services_native__WEBPACK_IMPORTED_MODULE_5__["NativeService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__["NgbModal"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
-var FidoRegisterComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-fido-register", _fido_register_component__WEBPACK_IMPORTED_MODULE_4__["FidoRegisterComponent"], View_FidoRegisterComponent_Host_0, {}, {}, []);
+    } return ad; }, null, null)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵpid"](131072, _angular_common__WEBPACK_IMPORTED_MODULE_2__["AsyncPipe"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]]), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, ["\u767B\u9332"])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](7, 0, null, null, 2, "app-loading", [], null, null, null, _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_3__["View_LoadingComponent_0"], _parts_loading_loading_component_ngfactory__WEBPACK_IMPORTED_MODULE_3__["RenderType_LoadingComponent"])), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](8, 114688, null, 0, _parts_loading_loading_component__WEBPACK_IMPORTED_MODULE_4__["LoadingComponent"], [], { show: [0, "show"] }, null), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵpid"](131072, _angular_common__WEBPACK_IMPORTED_MODULE_2__["AsyncPipe"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])], function (_ck, _v) { var _co = _v.component; var currVal_1 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵunv"](_v, 8, 0, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 9).transform(_co.isLoading)); _ck(_v, 8, 0, currVal_1); }, function (_ck, _v) { var _co = _v.component; var currVal_0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵunv"](_v, 4, 0, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 5).transform(_co.isLoading)); _ck(_v, 4, 0, currVal_0); }); }
+function View_FidoRegisterComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-fido-register", [], null, null, null, View_FidoRegisterComponent_0, RenderType_FidoRegisterComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _fido_register_component__WEBPACK_IMPORTED_MODULE_5__["FidoRegisterComponent"], [_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _ngrx_store__WEBPACK_IMPORTED_MODULE_7__["Store"], _ngrx_effects__WEBPACK_IMPORTED_MODULE_8__["Actions"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_9__["NgbModal"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
+var FidoRegisterComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-fido-register", _fido_register_component__WEBPACK_IMPORTED_MODULE_5__["FidoRegisterComponent"], View_FidoRegisterComponent_Host_0, {}, {}, []);
 
 
 
@@ -1469,9 +1487,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "../../node_modules/@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
-/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../store/actions */ "./src/app/store/actions/index.ts");
+/* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../store/reducers */ "./src/app/store/reducers/index.ts");
+/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -1513,88 +1535,69 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
+
+
+
 var FidoRegisterComponent = /** @class */ (function () {
-    function FidoRegisterComponent(native, router, modal) {
-        this.native = native;
+    function FidoRegisterComponent(router, store, actions, modal) {
         this.router = router;
+        this.store = store;
+        this.actions = actions;
         this.modal = modal;
     }
     FidoRegisterComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.isLoading = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getLoading"]));
+        this.registerList = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getFidoRegisterList"]));
+        this.error = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getError"]));
+        this.registerList.subscribe(function (registerList) {
+            if (registerList.length > 0) {
+                _this.router.navigate(['/']);
+                return;
+            }
+        }).unsubscribe();
+    };
+    FidoRegisterComponent.prototype.onSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var device, registerListResult, err_1;
+            var error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.isLoading = true;
-                        _a.label = 1;
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.registerFido()];
                     case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.native.device()];
+                        _a.sent();
+                        this.router.navigate(['/']);
+                        return [3 /*break*/, 3];
                     case 2:
-                        device = _a.sent();
-                        if (device === null) {
-                            throw new Error('device is null');
-                        }
-                        this.device = device;
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_4__["FidoAction"].RegisterList,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].ENV + "-" + this.device.uuid
-                            })];
-                    case 3:
-                        registerListResult = _a.sent();
-                        if (!registerListResult.isSuccess) {
-                            throw new Error('registerList fail');
-                        }
-                        if (registerListResult.result.length > 0) {
-                            this.router.navigate(['/']);
-                            return [2 /*return*/];
-                        }
-                        this.isLoading = false;
-                        return [3 /*break*/, 5];
-                    case 4:
-                        err_1 = _a.sent();
-                        this.router.navigate(['/error']);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        error_1 = _a.sent();
+                        this.openAlert({ title: 'エラー', body: (error_1 === null) ? '' : error_1.message });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    FidoRegisterComponent.prototype.onSubmit = function () {
+    FidoRegisterComponent.prototype.registerFido = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var registerResult, error_1;
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.isLoading = true;
-                        this.isDisabled = true;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_4__["FidoAction"].Register,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].ENV + "-" + this.device.uuid
-                            })];
-                    case 2:
-                        registerResult = _a.sent();
-                        if (!registerResult.isSuccess) {
-                            throw Error(registerResult.error);
-                        }
-                        this.router.navigate(['/']);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_1 = _a.sent();
-                        this.isLoading = false;
-                        this.isDisabled = false;
-                        this.openAlert({ title: 'エラー', body: error_1.message });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_7__["RegisterFido"]());
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["FidoActionTypes"].RegisterFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["FidoActionTypes"].RegisterFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+                    })];
             });
         });
     };
     FidoRegisterComponent.prototype.openAlert = function (args) {
-        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_5__["AlertModalComponent"], {
+        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_9__["AlertModalComponent"], {
             centered: true
         });
         modalRef.componentInstance.title = args.title;
@@ -1622,10 +1625,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FidoRemoveComponentNgFactory", function() { return FidoRemoveComponentNgFactory; });
 /* harmony import */ var _fido_remove_component_scss_shim_ngstyle__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fido-remove.component.scss.shim.ngstyle */ "./src/app/components/pages/fido/fido-remove/fido-remove.component.scss.shim.ngstyle.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _fido_remove_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fido-remove.component */ "./src/app/components/pages/fido/fido-remove/fido-remove.component.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _fido_remove_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fido-remove.component */ "./src/app/components/pages/fido/fido-remove/fido-remove.component.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap/modal/modal */ "../../node_modules/@ng-bootstrap/ng-bootstrap/modal/modal.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap/modal/modal */ "../../node_modules/@ng-bootstrap/ng-bootstrap/modal/modal.js");
 /**
  * @fileoverview This file was generated by the Angular template compiler. Do not edit.
  *
@@ -1638,15 +1643,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var styles_FidoRemoveComponent = [_fido_remove_component_scss_shim_ngstyle__WEBPACK_IMPORTED_MODULE_0__["styles"]];
 var RenderType_FidoRemoveComponent = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵcrt"]({ encapsulation: 0, styles: styles_FidoRemoveComponent, data: {} });
 
-function View_FidoRemoveComponent_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 5, "div", [["class", "p-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](1, 0, null, null, 4, "div", [["class", "p-3 bg-white shadow-sm w-100"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](2, 0, null, null, 1, "div", [["class", "mb-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, [" \u751F\u4F53\u60C5\u5831\u3092\u524A\u9664\u3067\u304D\u307E\u3059\u3002 "])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](4, 0, null, null, 1, "button", [["class", "btn btn-block btn-primary"], ["type", "button"]], [[8, "disabled", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_FidoRemoveComponent_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 6, "div", [["class", "p-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](1, 0, null, null, 5, "div", [["class", "p-3 bg-white shadow-sm w-100"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](2, 0, null, null, 1, "div", [["class", "mb-3"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, [" \u751F\u4F53\u60C5\u5831\u3092\u524A\u9664\u3067\u304D\u307E\u3059\u3002 "])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](4, 0, null, null, 2, "button", [["class", "btn btn-block btn-primary"], ["type", "button"]], [[8, "disabled", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onSubmit() !== false);
         ad = (pd_0 && ad);
-    } return ad; }, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, ["\u524A\u9664"]))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.isDisabled; _ck(_v, 4, 0, currVal_0); }); }
-function View_FidoRemoveComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-fido-remove", [], null, null, null, View_FidoRemoveComponent_0, RenderType_FidoRemoveComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _fido_remove_component__WEBPACK_IMPORTED_MODULE_2__["FidoRemoveComponent"], [_services_native__WEBPACK_IMPORTED_MODULE_3__["NativeService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_5__["NgbModal"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
-var FidoRemoveComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-fido-remove", _fido_remove_component__WEBPACK_IMPORTED_MODULE_2__["FidoRemoveComponent"], View_FidoRemoveComponent_Host_0, {}, {}, []);
+    } return ad; }, null, null)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵpid"](131072, _angular_common__WEBPACK_IMPORTED_MODULE_2__["AsyncPipe"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]]), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, ["\u524A\u9664"]))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵunv"](_v, 4, 0, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 5).transform(_co.isLoading)); _ck(_v, 4, 0, currVal_0); }); }
+function View_FidoRemoveComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-fido-remove", [], null, null, null, View_FidoRemoveComponent_0, RenderType_FidoRemoveComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _fido_remove_component__WEBPACK_IMPORTED_MODULE_3__["FidoRemoveComponent"], [_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _ngrx_store__WEBPACK_IMPORTED_MODULE_5__["Store"], _ngrx_effects__WEBPACK_IMPORTED_MODULE_6__["Actions"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__["NgbModal"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
+var FidoRemoveComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-fido-remove", _fido_remove_component__WEBPACK_IMPORTED_MODULE_3__["FidoRemoveComponent"], View_FidoRemoveComponent_Host_0, {}, {}, []);
 
 
 
@@ -1687,9 +1694,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "../../node_modules/@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
-/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../store/actions */ "./src/app/store/actions/index.ts");
+/* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../store/reducers */ "./src/app/store/reducers/index.ts");
+/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -1731,90 +1742,74 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
+
+
+
 var FidoRemoveComponent = /** @class */ (function () {
-    function FidoRemoveComponent(native, router, modal) {
-        this.native = native;
+    function FidoRemoveComponent(router, store, actions, modal) {
         this.router = router;
+        this.store = store;
+        this.actions = actions;
         this.modal = modal;
     }
     FidoRemoveComponent.prototype.ngOnInit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var device, registerListResult, error_1;
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.isLoading = true;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, this.native.device()];
-                    case 2:
-                        device = _a.sent();
-                        if (device === null) {
-                            throw new Error('device is null');
-                        }
-                        this.device = device;
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_4__["FidoAction"].RegisterList,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].ENV + "-" + this.device.uuid
-                            })];
-                    case 3:
-                        registerListResult = _a.sent();
-                        if (!registerListResult.isSuccess) {
-                            throw new Error('registerList fail');
-                        }
-                        if (registerListResult.result.length === 0) {
-                            this.router.navigate(['/fido/register']);
-                            return [2 /*return*/];
-                        }
-                        this.registerList = registerListResult.result;
-                        this.isLoading = false;
-                        return [3 /*break*/, 5];
-                    case 4:
-                        error_1 = _a.sent();
-                        this.router.navigate(['/error']);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
+                this.isLoading = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getLoading"]));
+                this.registerList = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getFidoRegisterList"]));
+                this.error = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_8__["getError"]));
+                this.registerList.subscribe(function (registerList) {
+                    if (registerList.length === 0) {
+                        _this.router.navigate(['/fido/register']);
+                        return;
+                    }
+                }).unsubscribe();
+                return [2 /*return*/];
             });
         });
     };
     FidoRemoveComponent.prototype.onSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var removeResult, error_2;
+            var error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.isLoading = true;
-                        this.isDisabled = true;
-                        _a.label = 1;
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.deleteFido()];
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_4__["FidoAction"].Remove,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].ENV + "-" + this.device.uuid,
-                                handle: this.registerList[0].handle
-                            })];
+                        _a.sent();
+                        this.router.navigate(['/']);
+                        return [3 /*break*/, 3];
                     case 2:
-                        removeResult = _a.sent();
-                        if (!removeResult.isSuccess) {
-                            throw Error(removeResult.error);
-                        }
-                        this.router.navigate(['/fido/register']);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_2 = _a.sent();
-                        this.isLoading = false;
-                        this.isDisabled = false;
-                        this.openAlert({ title: 'エラー', body: error_2.message });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        error_1 = _a.sent();
+                        this.openAlert({ title: 'エラー', body: (error_1 === null) ? '' : error_1.message });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
+    FidoRemoveComponent.prototype.deleteFido = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_7__["DeleteFido"]());
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["FidoActionTypes"].DeleteFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["FidoActionTypes"].DeleteFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+                    })];
+            });
+        });
+    };
     FidoRemoveComponent.prototype.openAlert = function (args) {
-        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_5__["AlertModalComponent"], {
+        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_9__["AlertModalComponent"], {
             centered: true
         });
         modalRef.componentInstance.title = args.title;
@@ -1938,14 +1933,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
 /* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngrx/effects */ "../../node_modules/@ngrx/effects/fesm5/effects.js");
 /* harmony import */ var _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap/modal/modal */ "../../node_modules/@ng-bootstrap/ng-bootstrap/modal/modal.js");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
 /**
  * @fileoverview This file was generated by the Angular template compiler. Do not edit.
  *
  * @suppress {suspiciousCode,uselessCode,missingProperties,missingOverride,checkTypes}
  * tslint:disable
  */ 
-
 
 
 
@@ -1964,7 +1957,7 @@ function View_GoodsConfirmComponent_0(_l) { return _angular_core__WEBPACK_IMPORT
         var pd_0 = (_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 29).onClick() !== false);
         ad = (pd_0 && ad);
     } return ad; }, null, null)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](29, 16384, null, 0, _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterLink"], [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"], [8, null], _angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"]], { routerLink: [0, "routerLink"] }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, ["\u623B\u308B"]))], function (_ck, _v) { var currVal_6 = "/goods/qrcode"; _ck(_v, 29, 0, currVal_6); }, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.goodsInfo.image; _ck(_v, 3, 0, currVal_0); var currVal_1 = _co.goodsInfo.item; _ck(_v, 9, 0, currVal_1); var currVal_2 = _co.goodsInfo.itemLength; _ck(_v, 14, 0, currVal_2); var currVal_3 = _co.goodsInfo.paymentMethod; _ck(_v, 19, 0, currVal_3); var currVal_4 = _co.goodsInfo.amount; _ck(_v, 24, 0, currVal_4); var currVal_5 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵunv"](_v, 25, 0, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 26).transform(_co.isLoading)); _ck(_v, 25, 0, currVal_5); }); }
-function View_GoodsConfirmComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-goods-confirm", [], null, null, null, View_GoodsConfirmComponent_0, RenderType_GoodsConfirmComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _goods_confirm_component__WEBPACK_IMPORTED_MODULE_4__["GoodsConfirmComponent"], [_ngrx_store__WEBPACK_IMPORTED_MODULE_5__["Store"], _ngrx_effects__WEBPACK_IMPORTED_MODULE_6__["Actions"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__["NgbModal"], _services_native__WEBPACK_IMPORTED_MODULE_8__["NativeService"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
+function View_GoodsConfirmComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-goods-confirm", [], null, null, null, View_GoodsConfirmComponent_0, RenderType_GoodsConfirmComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 114688, null, 0, _goods_confirm_component__WEBPACK_IMPORTED_MODULE_4__["GoodsConfirmComponent"], [_ngrx_store__WEBPACK_IMPORTED_MODULE_5__["Store"], _ngrx_effects__WEBPACK_IMPORTED_MODULE_6__["Actions"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _ng_bootstrap_ng_bootstrap_modal_modal__WEBPACK_IMPORTED_MODULE_7__["NgbModal"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
 var GoodsConfirmComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-goods-confirm", _goods_confirm_component__WEBPACK_IMPORTED_MODULE_4__["GoodsConfirmComponent"], View_GoodsConfirmComponent_Host_0, {}, {}, []);
 
 
@@ -2010,12 +2003,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _data_goods__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../data/goods */ "./src/app/data/goods.ts");
-/* harmony import */ var _services_native__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../services/native */ "./src/app/services/native.ts");
-/* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../store/actions */ "./src/app/store/actions/index.ts");
-/* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../../store/reducers */ "./src/app/store/reducers/index.ts");
-/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
+/* harmony import */ var _data_goods__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../data/goods */ "./src/app/data/goods.ts");
+/* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../store/actions */ "./src/app/store/actions/index.ts");
+/* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../store/reducers */ "./src/app/store/reducers/index.ts");
+/* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -2062,86 +2053,111 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
-
-
 var GoodsConfirmComponent = /** @class */ (function () {
-    function GoodsConfirmComponent(store, actions, router, modal, native) {
+    function GoodsConfirmComponent(store, actions, router, modal) {
         this.store = store;
         this.actions = actions;
         this.router = router;
         this.modal = modal;
-        this.native = native;
     }
     GoodsConfirmComponent.prototype.ngOnInit = function () {
-        this.goodsInfo = _data_goods__WEBPACK_IMPORTED_MODULE_8__["goodsInfo"];
-        this.user = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_11__["getUser"]));
-        this.isLoading = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_11__["getLoading"]));
-        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_11__["getGoods"]));
+        this.goodsInfo = _data_goods__WEBPACK_IMPORTED_MODULE_7__["goodsInfo"];
+        this.user = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getUser"]));
+        this.isLoading = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getLoading"]));
+        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getPurchaseGoods"]));
     };
     GoodsConfirmComponent.prototype.onSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var device, authenticationResult, error_1, success, fail;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.native.device()];
-                    case 1:
-                        device = _a.sent();
-                        if (device === null) {
-                            throw new Error('device is null');
+                this.user.subscribe(function (user) { return __awaiter(_this, void 0, void 0, function () {
+                    var error_1, error_2;
+                    var _this = this;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (user === null) {
+                                    this.router.navigate(['/error']);
+                                    return [2 /*return*/];
+                                }
+                                if (user.coinAccounts[0].availableBalance < this.goodsInfo.amount) {
+                                    this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
+                                    return [2 /*return*/];
+                                }
+                                _a.label = 1;
+                            case 1:
+                                _a.trys.push([1, 3, , 4]);
+                                return [4 /*yield*/, this.authFido()];
+                            case 2:
+                                _a.sent();
+                                return [3 /*break*/, 4];
+                            case 3:
+                                error_1 = _a.sent();
+                                this.error.subscribe(function (error) {
+                                    _this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
+                                }).unsubscribe();
+                                return [2 /*return*/];
+                            case 4:
+                                _a.trys.push([4, 6, , 7]);
+                                return [4 /*yield*/, this.useCoin(user)];
+                            case 5:
+                                _a.sent();
+                                this.router.navigate(['/ticket/complete']);
+                                return [3 /*break*/, 7];
+                            case 6:
+                                error_2 = _a.sent();
+                                this.router.navigate(['/error']);
+                                return [3 /*break*/, 7];
+                            case 7: return [2 /*return*/];
                         }
-                        return [4 /*yield*/, this.native.fido({
-                                action: _services_native__WEBPACK_IMPORTED_MODULE_9__["FidoAction"].Authentication,
-                                user: _environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].APP_NAME + "-" + _environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].ENV + "-" + device.uuid
-                            })];
-                    case 2:
-                        authenticationResult = _a.sent();
-                        if (!authenticationResult.isSuccess) {
-                            throw Error(authenticationResult.error);
-                        }
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_1 = _a.sent();
-                        this.openAlert({ title: 'エラー', body: error_1.message });
-                        return [2 /*return*/];
-                    case 4:
-                        this.user.subscribe(function (result) {
-                            if (result === null) {
-                                _this.router.navigate(['/error']);
-                                return;
-                            }
-                            var user = result;
-                            if (user.coinAccounts[0].availableBalance < _this.goodsInfo.amount) {
-                                _this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
-                                return;
-                            }
-                            _this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_10__["UseCoin"]({
-                                type: 'goods',
-                                userName: user.userName,
-                                coinAccount: user.coinAccounts[0],
-                                amount: _this.goodsInfo.amount,
-                                notes: _this.goodsInfo.usedNotes
-                            }));
-                        }).unsubscribe();
-                        success = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_10__["PurchaseActionTypes"].UseCoinSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-                            // 成功時の処理
-                            _this.router.navigate(['/goods/complete']);
-                        }));
-                        fail = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_10__["PurchaseActionTypes"].UseCoinFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-                            // エラー時の処理
-                            _this.router.navigate(['/error']);
-                            return;
+                    });
+                }); }).unsubscribe();
+                return [2 /*return*/];
+            });
+        });
+    };
+    GoodsConfirmComponent.prototype.authFido = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["AuthFido"]());
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
                         }));
                         Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
-                        return [2 /*return*/];
-                }
+                    })];
+            });
+        });
+    };
+    GoodsConfirmComponent.prototype.useCoin = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["UseCoin"]({
+                    type: 'goods',
+                    userName: user.userName,
+                    coinAccount: user.coinAccounts[0],
+                    amount: this.goodsInfo.amount,
+                    notes: this.goodsInfo.usedNotes
+                }));
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+                    })];
             });
         });
     };
     GoodsConfirmComponent.prototype.openAlert = function (args) {
-        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_12__["AlertModalComponent"], {
+        var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_10__["AlertModalComponent"], {
             centered: true
         });
         modalRef.componentInstance.title = args.title;
@@ -2303,7 +2319,7 @@ var GoodsQrcodeComponent = /** @class */ (function () {
         this.native = native;
     }
     GoodsQrcodeComponent.prototype.ngOnInit = function () {
-        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_5__["getGoods"]));
+        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_5__["getPurchaseGoods"]));
     };
     GoodsQrcodeComponent.prototype.onSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -2604,8 +2620,8 @@ var HistoryListComponent = /** @class */ (function () {
         this.router = router;
     }
     HistoryListComponent.prototype.ngOnInit = function () {
-        this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_6__["getTicket"]));
-        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_6__["getGoods"]));
+        this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_6__["getPurchaseTicket"]));
+        this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_6__["getPurchaseGoods"]));
     };
     HistoryListComponent.prototype.onSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -2806,8 +2822,8 @@ var IndexComponent = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.user = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getUser"]));
-                this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getTicket"]));
-                this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getGoods"]));
+                this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getPurchaseTicket"]));
+                this.isGoods = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_3__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_7__["getPurchaseGoods"]));
                 this.user.subscribe(function (result) {
                     if (result === null) {
                         _this.router.navigate(['/error']);
@@ -3121,6 +3137,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../store/actions */ "./src/app/store/actions/index.ts");
 /* harmony import */ var _store_reducers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../store/reducers */ "./src/app/store/reducers/index.ts");
 /* harmony import */ var _parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../parts/alert-modal/alert-modal.component */ "./src/app/components/parts/alert-modal/alert-modal.component.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 
 
 
@@ -3142,57 +3193,93 @@ var TicketConfirmComponent = /** @class */ (function () {
     TicketConfirmComponent.prototype.ngOnInit = function () {
         this.ticketInfo = _data_ticket__WEBPACK_IMPORTED_MODULE_7__["ticketInfo"];
         this.user = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getUser"]));
-        this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getTicket"]));
+        this.isTicket = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getPurchaseTicket"]));
         this.error = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_4__["select"])(_store_reducers__WEBPACK_IMPORTED_MODULE_9__["getError"]));
     };
     TicketConfirmComponent.prototype.onSubmit = function () {
-        this.authFido();
+        var _this = this;
+        this.user.subscribe(function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var error_1, error_2;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (user === null) {
+                            this.router.navigate(['/error']);
+                            return [2 /*return*/];
+                        }
+                        if (user.coinAccounts[0].availableBalance < this.ticketInfo.amount) {
+                            this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
+                            return [2 /*return*/];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.authFido()];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        this.error.subscribe(function (error) {
+                            _this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
+                        }).unsubscribe();
+                        return [2 /*return*/];
+                    case 4:
+                        _a.trys.push([4, 6, , 7]);
+                        return [4 /*yield*/, this.useCoin(user)];
+                    case 5:
+                        _a.sent();
+                        this.router.navigate(['/ticket/complete']);
+                        return [3 /*break*/, 7];
+                    case 6:
+                        error_2 = _a.sent();
+                        this.router.navigate(['/error']);
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/];
+                }
+            });
+        }); }).unsubscribe();
     };
     TicketConfirmComponent.prototype.authFido = function () {
-        var _this = this;
-        this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["AuthFido"]());
-        var success = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-            // 成功時の処理
-            _this.useCoin();
-        }));
-        var fail = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-            // エラー時の処理
-            _this.error.subscribe(function (error) {
-                _this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
-            }).unsubscribe();
-        }));
-        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["AuthFido"]());
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["FidoActionTypes"].AuthFidoFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+                    })];
+            });
+        });
     };
-    TicketConfirmComponent.prototype.useCoin = function () {
-        var _this = this;
-        this.user.subscribe(function (result) {
-            if (result === null) {
-                _this.router.navigate(['/error']);
-                return;
-            }
-            var user = result;
-            if (user.coinAccounts[0].availableBalance < _this.ticketInfo.amount) {
-                _this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
-                return;
-            }
-            _this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["UseCoin"]({
-                type: 'ticket',
-                userName: user.userName,
-                coinAccount: user.coinAccounts[0],
-                amount: _this.ticketInfo.amount,
-                notes: _this.ticketInfo.usedNotes
-            }));
-        }).unsubscribe();
-        var success = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-            // 成功時の処理
-            _this.router.navigate(['/ticket/complete']);
-        }));
-        var fail = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
-            // エラー時の処理
-            _this.router.navigate(['/error']);
-            return;
-        }));
-        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+    TicketConfirmComponent.prototype.useCoin = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_8__["UseCoin"]({
+                    type: 'ticket',
+                    userName: user.userName,
+                    coinAccount: user.coinAccounts[0],
+                    amount: this.ticketInfo.amount,
+                    notes: this.ticketInfo.usedNotes
+                }));
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var success = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () { return resolve(); }));
+                        var fail = _this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_8__["PurchaseActionTypes"].UseCoinFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
+                            _this.error.subscribe(function (error) {
+                                reject(error);
+                            });
+                        }));
+                        Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["race"])(success, fail).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe();
+                    })];
+            });
+        });
     };
     TicketConfirmComponent.prototype.openAlert = function (args) {
         var modalRef = this.modal.open(_parts_alert_modal_alert_modal_component__WEBPACK_IMPORTED_MODULE_10__["AlertModalComponent"], {
@@ -3347,6 +3434,7 @@ var UserResetComponent = /** @class */ (function () {
         this.store.dispatch(new _store_actions__WEBPACK_IMPORTED_MODULE_7__["ResetUser"]({ user: args.user }));
         var success = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["UserActionTypes"].ResetUserSuccess), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
             console.log('ResetUserSuccess');
+            localStorage.removeItem('App');
             _this.router.navigate(['/auth/signin']);
         }));
         var fail = this.actions.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_store_actions__WEBPACK_IMPORTED_MODULE_7__["UserActionTypes"].ResetUserFail), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function () {
@@ -6157,7 +6245,7 @@ var Effects = /** @class */ (function () {
                         if (!registerListResult.isSuccess) {
                             throw new Error('registerList fail');
                         }
-                        return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_5__["LoadFidoSuccess"]()];
+                        return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_5__["LoadFidoSuccess"]({ registerList: registerListResult.result })];
                     case 3:
                         error_6 = _a.sent();
                         return [2 /*return*/, new _actions__WEBPACK_IMPORTED_MODULE_5__["LoadFidoFail"]({ error: error_6 })];
@@ -6284,7 +6372,7 @@ var Effects = /** @class */ (function () {
 /*!*****************************************!*\
   !*** ./src/app/store/reducers/index.ts ***!
   \*****************************************/
-/*! exports provided: reducer, getFeatureState, getLoading, getUser, getTicket, getGoods, getError */
+/*! exports provided: reducer, getFeatureState, getLoading, getUser, getPurchaseTicket, getPurchaseGoods, getFidoRegisterList, getError */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6292,8 +6380,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFeatureState", function() { return getFeatureState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLoading", function() { return getLoading; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUser", function() { return getUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTicket", function() { return getTicket; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGoods", function() { return getGoods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseTicket", function() { return getPurchaseTicket; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseGoods", function() { return getPurchaseGoods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFidoRegisterList", function() { return getFidoRegisterList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getError", function() { return getError; });
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "../../node_modules/@ngrx/store/fesm5/store.js");
 /* harmony import */ var _reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reducer */ "./src/app/store/reducers/reducer.ts");
@@ -6311,8 +6400,9 @@ __webpack_require__.r(__webpack_exports__);
 var getFeatureState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createFeatureSelector"])('App');
 var getLoading = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getLoading"]);
 var getUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getUser"]);
-var getTicket = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getTicket"]);
-var getGoods = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getGoods"]);
+var getPurchaseTicket = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getPurchaseTicket"]);
+var getPurchaseGoods = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getPurchaseGoods"]);
+var getFidoRegisterList = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getFidoRegisterList"]);
 var getError = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getFeatureState, _reducer__WEBPACK_IMPORTED_MODULE_1__["getError"]);
 
 
@@ -6322,7 +6412,7 @@ var getError = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"]
 /*!*******************************************!*\
   !*** ./src/app/store/reducers/reducer.ts ***!
   \*******************************************/
-/*! exports provided: initialState, reducer, getLoading, getUser, getTicket, getGoods, getError */
+/*! exports provided: initialState, reducer, getLoading, getUser, getPurchaseTicket, getPurchaseGoods, getFidoRegisterList, getError */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6331,8 +6421,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reducer", function() { return reducer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLoading", function() { return getLoading; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUser", function() { return getUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTicket", function() { return getTicket; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGoods", function() { return getGoods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseTicket", function() { return getPurchaseTicket; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPurchaseGoods", function() { return getPurchaseGoods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFidoRegisterList", function() { return getFidoRegisterList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getError", function() { return getError; });
 /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../models */ "./src/app/models/index.ts");
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions */ "./src/app/store/actions/index.ts");
@@ -6353,8 +6444,13 @@ var initialState = {
     loading: false,
     error: null,
     user: null,
-    ticket: false,
-    goods: false,
+    purchase: {
+        ticket: false,
+        goods: false
+    },
+    fido: {
+        registerList: []
+    }
 };
 function getInitialState() {
     var json = localStorage.getItem('App');
@@ -6366,8 +6462,8 @@ function getInitialState() {
         loading: data.loading,
         error: data.error,
         user: (data.user === null) ? null : new _models__WEBPACK_IMPORTED_MODULE_0__["User"](data.user),
-        ticket: data.ticket,
-        goods: data.goods
+        purchase: data.purchase,
+        fido: data.fido
     };
 }
 /**
@@ -6386,10 +6482,12 @@ function reducer(state, action) {
             }
             switch (action.payload.type) {
                 case 'ticket': {
-                    return __assign({}, state, { loading: false, ticket: true, error: null });
+                    var purchase = __assign({}, state.purchase, { ticket: true });
+                    return __assign({}, state, { loading: false, error: null, purchase: purchase });
                 }
                 case 'goods': {
-                    return __assign({}, state, { loading: false, goods: true, error: null });
+                    var purchase = __assign({}, state.purchase, { goods: true });
+                    return __assign({}, state, { loading: false, error: null, purchase: purchase });
                 }
                 default: {
                     return __assign({}, state, { loading: false, error: null });
@@ -6427,7 +6525,8 @@ function reducer(state, action) {
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["UserActionTypes"].ResetUserSuccess: {
             var user = action.payload.user;
-            return __assign({}, state, { loading: false, user: user, ticket: false, goods: false, error: null });
+            var purchase = { ticket: false, goods: false };
+            return __assign({}, state, { loading: false, user: user, error: null, purchase: purchase });
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["UserActionTypes"].ResetUserFail: {
             var error = action.payload.error;
@@ -6447,7 +6546,9 @@ function reducer(state, action) {
             return __assign({}, state, { loading: true });
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["FidoActionTypes"].LoadFidoSuccess: {
-            return __assign({}, state, { loading: false, error: null });
+            var registerList = action.payload.registerList;
+            var fido = __assign({}, state.fido, { registerList: registerList });
+            return __assign({}, state, { loading: false, error: null, fido: fido });
         }
         case _actions__WEBPACK_IMPORTED_MODULE_1__["FidoActionTypes"].LoadFidoFail: {
             var error = action.payload.error;
@@ -6483,8 +6584,9 @@ function reducer(state, action) {
  */
 var getLoading = function (state) { return state.loading; };
 var getUser = function (state) { return state.user; };
-var getTicket = function (state) { return state.ticket; };
-var getGoods = function (state) { return state.goods; };
+var getPurchaseTicket = function (state) { return state.purchase.ticket; };
+var getPurchaseGoods = function (state) { return state.purchase.goods; };
+var getFidoRegisterList = function (state) { return state.fido.registerList; };
 var getError = function (state) { return state.error; };
 
 

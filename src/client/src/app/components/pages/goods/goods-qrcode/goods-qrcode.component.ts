@@ -22,7 +22,7 @@ export class GoodsQrcodeComponent implements OnInit {
     ) { }
 
     public ngOnInit() {
-        this.isGoods = this.store.pipe(select(reducers.getGoods));
+        this.isGoods = this.store.pipe(select(reducers.getPurchaseGoods));
     }
 
     public async onSubmit() {

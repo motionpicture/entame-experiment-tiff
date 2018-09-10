@@ -3,8 +3,8 @@
         <div class="mb-3">
             生体情報を登録してください。
         </div>
-        <button (click)="onSubmit()" [disabled]="isDisabled" type="button" class="btn btn-block btn-primary">登録</button>
+        <button (click)="onSubmit()" [disabled]="isLoading | async" type="button" class="btn btn-block btn-primary">登録</button>
     </div>
 </div>
 
-<app-loading [show]="isLoading"></app-loading>
+<app-loading [show]="isLoading | async"></app-loading>

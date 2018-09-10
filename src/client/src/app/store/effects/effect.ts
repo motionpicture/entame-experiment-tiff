@@ -168,7 +168,7 @@ export class Effects {
                 if (!registerListResult.isSuccess) {
                     throw new Error('registerList fail');
                 }
-                return new LoadFidoSuccess();
+                return new LoadFidoSuccess({ registerList: registerListResult.result });
             } catch (error) {
                 return new LoadFidoFail({ error: error });
             }

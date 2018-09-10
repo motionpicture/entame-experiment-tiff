@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../../../environments/environment';
-import { FidoAction, IDeviceResult, NativeService } from '../../../../services/native';
+import { Actions, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
+import { Observable, race } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+import { FidoActionTypes, RegisterFido } from '../../../../store/actions';
+import * as reducers from '../../../../store/reducers';
 import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.component';
 
 @Component({
@@ -11,59 +15,55 @@ import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.comp
     styleUrls: ['./fido-register.component.scss']
 })
 export class FidoRegisterComponent implements OnInit {
-    public device: IDeviceResult;
-    public isDisabled: boolean;
-    public isLoading: boolean;
-
+    public isLoading: Observable<boolean>;
+    public registerList: Observable<any[]>;
+    public error: Observable<Error | null>;
     constructor(
-        private native: NativeService,
         private router: Router,
+        private store: Store<reducers.IState>,
+        private actions: Actions,
         private modal: NgbModal
     ) { }
 
-    public async ngOnInit() {
-        this.isLoading = true;
-        try {
-            const device = await this.native.device();
-            if (device === null) {
-                throw new Error('device is null');
-            }
-            this.device = device;
-            const registerListResult = await this.native.fido({
-                action: FidoAction.RegisterList,
-                user: `${environment.APP_NAME}-${environment.ENV}-${this.device.uuid}`
-            });
-            if (!registerListResult.isSuccess) {
-                throw new Error('registerList fail');
-            }
-            if (registerListResult.result.length > 0) {
+    public ngOnInit() {
+        this.isLoading = this.store.pipe(select(reducers.getLoading));
+        this.registerList = this.store.pipe(select(reducers.getFidoRegisterList));
+        this.error = this.store.pipe(select(reducers.getError));
+        this.registerList.subscribe((registerList) => {
+            if (registerList.length > 0) {
                 this.router.navigate(['/']);
 
                 return;
             }
-            this.isLoading = false;
-        } catch (err) {
-            this.router.navigate(['/error']);
-        }
+        }).unsubscribe();
     }
 
     public async onSubmit() {
-        this.isLoading = true;
-        this.isDisabled = true;
         try {
-            const registerResult = await this.native.fido({
-                action: FidoAction.Register,
-                user: `${environment.APP_NAME}-${environment.ENV}-${this.device.uuid}`
-            });
-            if (!registerResult.isSuccess) {
-                throw Error(registerResult.error);
-            }
+            await this.registerFido();
             this.router.navigate(['/']);
         } catch (error) {
-            this.isLoading = false;
-            this.isDisabled = false;
-            this.openAlert({ title: 'エラー', body: error.message });
+            this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
         }
+    }
+
+    private async registerFido() {
+        this.store.dispatch(new RegisterFido());
+        return new Promise((resolve, reject) => {
+            const success = this.actions.pipe(
+                ofType(FidoActionTypes.RegisterFidoSuccess),
+                tap(() => resolve())
+            );
+            const fail = this.actions.pipe(
+                ofType(FidoActionTypes.RegisterFidoFail),
+                tap(() => {
+                    this.error.subscribe((error) => {
+                        reject(error);
+                    });
+                })
+            );
+            race(success, fail).pipe(take(1)).subscribe();
+        });
     }
 
     private openAlert(args: {

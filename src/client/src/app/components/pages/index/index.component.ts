@@ -29,8 +29,8 @@ export class IndexComponent implements OnInit {
 
     public async ngOnInit() {
         this.user = this.store.pipe(select(reducers.getUser));
-        this.isTicket = this.store.pipe(select(reducers.getTicket));
-        this.isGoods = this.store.pipe(select(reducers.getGoods));
+        this.isTicket = this.store.pipe(select(reducers.getPurchaseTicket));
+        this.isGoods = this.store.pipe(select(reducers.getPurchaseGoods));
         this.user.subscribe((result) => {
             if (result === null) {
                 this.router.navigate(['/error']);

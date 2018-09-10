@@ -3,6 +3,6 @@
         <div class="mb-3">
             生体情報を削除できます。
         </div>
-        <button (click)="onSubmit()" [disabled]="isDisabled" type="button" class="btn btn-block btn-primary">削除</button>
+        <button (click)="onSubmit()" [disabled]="isLoading | async" type="button" class="btn btn-block btn-primary">削除</button>
     </div>
 </div>

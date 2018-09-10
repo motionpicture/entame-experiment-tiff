@@ -15,8 +15,13 @@ export interface IState {
     loading: boolean;
     error: Error | null;
     user: User | null;
-    ticket: boolean;
-    goods: boolean;
+    purchase: {
+        ticket: boolean;
+        goods: boolean;
+    };
+    fido: {
+        registerList: any[]
+    };
 }
 
 /**
@@ -26,8 +31,13 @@ export const initialState: IState = {
     loading: false,
     error: null,
     user: null,
-    ticket: false,
-    goods: false,
+    purchase: {
+        ticket: false,
+        goods: false
+    },
+    fido: {
+        registerList: []
+    }
 };
 
 function getInitialState(): IState {
@@ -40,9 +50,8 @@ function getInitialState(): IState {
         loading: data.loading,
         error: data.error,
         user: (data.user === null) ? null : new User(data.user),
-        ticket: data.ticket,
-        goods: data.goods
-
+        purchase: data.purchase,
+        fido: data.fido
     };
 }
 
@@ -65,10 +74,12 @@ export function reducer(
             }
             switch (action.payload.type) {
                 case 'ticket': {
-                    return { ...state, loading: false, ticket: true, error: null };
+                    const purchase = { ...state.purchase, ticket: true };
+                    return { ...state, loading: false, error: null, purchase: purchase };
                 }
                 case 'goods': {
-                    return { ...state, loading: false, goods: true, error: null };
+                    const purchase = { ...state.purchase, goods: true };
+                    return { ...state, loading: false, error: null, purchase: purchase };
                 }
                 default: {
                     return { ...state, loading: false, error: null };
@@ -106,7 +117,8 @@ export function reducer(
         }
         case UserActionTypes.ResetUserSuccess: {
             const user = action.payload.user;
-            return { ...state, loading: false, user: user, ticket: false, goods: false, error: null };
+            const purchase = { ticket: false, goods: false };
+            return { ...state, loading: false, user: user, error: null, purchase: purchase };
         }
         case UserActionTypes.ResetUserFail: {
             const error = action.payload.error;
@@ -126,7 +138,9 @@ export function reducer(
             return { ...state, loading: true };
         }
         case FidoActionTypes.LoadFidoSuccess: {
-            return { ...state, loading: false, error: null };
+            const registerList = action.payload.registerList;
+            const fido = { ...state.fido, registerList: registerList };
+            return { ...state, loading: false, error: null, fido: fido };
         }
         case FidoActionTypes.LoadFidoFail: {
             const error = action.payload.error;
@@ -163,6 +177,7 @@ export function reducer(
  */
 export const getLoading = (state: IState) => state.loading;
 export const getUser = (state: IState) => state.user;
-export const getTicket = (state: IState) => state.ticket;
-export const getGoods = (state: IState) => state.goods;
+export const getPurchaseTicket = (state: IState) => state.purchase.ticket;
+export const getPurchaseGoods = (state: IState) => state.purchase.goods;
+export const getFidoRegisterList = (state: IState) => state.fido.registerList;
 export const getError = (state: IState) => state.error;

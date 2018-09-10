@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../../../environments/environment';
-import { FidoAction, IDeviceResult, NativeService } from '../../../../services/native';
+import { Actions, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
+import { Observable, race } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+import { DeleteFido, FidoActionTypes } from '../../../../store/actions';
+import * as reducers from '../../../../store/reducers';
 import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.component';
 
 @Component({
@@ -11,70 +15,56 @@ import { AlertModalComponent } from '../../../parts/alert-modal/alert-modal.comp
     styleUrls: ['./fido-remove.component.scss']
 })
 export class FidoRemoveComponent implements OnInit {
-    public isLoading: boolean;
-    public isDisabled: boolean;
-    public device: IDeviceResult;
-    public alertModal: boolean;
-    public registerList: any[];
+    public isLoading: Observable<boolean>;
+    public registerList: Observable<any[]>;
+    public error: Observable<Error | null>;
 
     constructor(
-        private native: NativeService,
         private router: Router,
+        private store: Store<reducers.IState>,
+        private actions: Actions,
         private modal: NgbModal
     ) { }
 
     public async ngOnInit() {
-        this.isLoading = true;
-        try {
-            const device = await this.native.device();
-            if (device === null) {
-                throw new Error('device is null');
-            }
-            this.device = device;
-            const registerListResult = await this.native.fido({
-                action: FidoAction.RegisterList,
-                user: `${environment.APP_NAME}-${environment.ENV}-${this.device.uuid}`
-            });
-            if (!registerListResult.isSuccess) {
-                throw new Error('registerList fail');
-            }
-            if (registerListResult.result.length === 0) {
+        this.isLoading = this.store.pipe(select(reducers.getLoading));
+        this.registerList = this.store.pipe(select(reducers.getFidoRegisterList));
+        this.error = this.store.pipe(select(reducers.getError));
+        this.registerList.subscribe((registerList) => {
+            if (registerList.length === 0) {
                 this.router.navigate(['/fido/register']);
 
                 return;
             }
-            this.registerList = registerListResult.result;
-            this.isLoading = false;
-        } catch (error) {
-            this.router.navigate(['/error']);
-        }
+        }).unsubscribe();
     }
 
     public async onSubmit() {
-        this.isLoading = true;
-        this.isDisabled = true;
         try {
-            // const authenticationResult = await this.native.fido({
-            //     action: FidoAction.Authentication,
-            //     user: `${environment.APP_NAME}-${environment.ENV}-${this.device.uuid}`
-            // });
-            // if (!authenticationResult.isSuccess) {
-            //     throw Error(authenticationResult.error);
-            // }
-            const removeResult = await this.native.fido({
-                action: FidoAction.Remove,
-                user: `${environment.APP_NAME}-${environment.ENV}-${this.device.uuid}`,
-                handle: this.registerList[0].handle
-            });
-            if (!removeResult.isSuccess) {
-                throw Error(removeResult.error);
-            }
-            this.router.navigate(['/fido/register']);
+            await this.deleteFido();
+            this.router.navigate(['/']);
         } catch (error) {
-            this.isLoading = false;
-            this.isDisabled = false;
-            this.openAlert({ title: 'エラー', body: error.message });
+            this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
         }
+    }
+
+    private async deleteFido() {
+        this.store.dispatch(new DeleteFido());
+        return new Promise((resolve, reject) => {
+            const success = this.actions.pipe(
+                ofType(FidoActionTypes.DeleteFidoSuccess),
+                tap(() => resolve())
+            );
+            const fail = this.actions.pipe(
+                ofType(FidoActionTypes.DeleteFidoFail),
+                tap(() => {
+                    this.error.subscribe((error) => {
+                        reject(error);
+                    });
+                })
+            );
+            race(success, fail).pipe(take(1)).subscribe();
+        });
     }
 
     private openAlert(args: {

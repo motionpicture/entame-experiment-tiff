@@ -57,6 +57,7 @@ export class UserResetComponent implements OnInit {
             ofType(UserActionTypes.ResetUserSuccess),
             tap(() => {
                 console.log('ResetUserSuccess');
+                localStorage.removeItem('App');
                 this.router.navigate(['/auth/signin']);
             })
         );

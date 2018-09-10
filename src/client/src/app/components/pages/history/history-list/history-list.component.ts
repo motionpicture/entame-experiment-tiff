@@ -25,8 +25,8 @@ export class HistoryListComponent implements OnInit {
     ) { }
 
     public ngOnInit() {
-        this.isTicket = this.store.pipe(select(reducers.getTicket));
-        this.isGoods = this.store.pipe(select(reducers.getGoods));
+        this.isTicket = this.store.pipe(select(reducers.getPurchaseTicket));
+        this.isGoods = this.store.pipe(select(reducers.getPurchaseGoods));
     }
 
     public async onSubmit() {

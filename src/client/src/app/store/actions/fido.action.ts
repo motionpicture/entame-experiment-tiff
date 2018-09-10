@@ -54,7 +54,7 @@ export class LoadFido implements Action {
  */
 export class LoadFidoSuccess implements Action {
     public readonly type = FidoActionTypes.LoadFidoSuccess;
-    constructor(public payload?: {}) { }
+    constructor(public payload: { registerList: any[] }) { }
 }
 
 /**

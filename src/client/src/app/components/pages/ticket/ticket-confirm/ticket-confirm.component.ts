@@ -32,71 +32,79 @@ export class TicketConfirmComponent implements OnInit {
     public ngOnInit() {
         this.ticketInfo = ticketInfo;
         this.user = this.store.pipe(select(reducers.getUser));
-        this.isTicket = this.store.pipe(select(reducers.getTicket));
+        this.isTicket = this.store.pipe(select(reducers.getPurchaseTicket));
         this.error = this.store.pipe(select(reducers.getError));
     }
 
     public onSubmit() {
-        this.authFido();
-    }
-
-    private authFido() {
-        this.store.dispatch(new AuthFido());
-        const success = this.actions.pipe(
-            ofType(FidoActionTypes.AuthFidoSuccess),
-            tap(() => {
-                // 成功時の処理
-                this.useCoin();
-            })
-        );
-
-        const fail = this.actions.pipe(
-            ofType(FidoActionTypes.AuthFidoFail),
-            tap(() => {
-                // エラー時の処理
-                this.error.subscribe((error) => {
-                    this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
-                }).unsubscribe();
-            })
-        );
-        race(success, fail).pipe(take(1)).subscribe();
-    }
-
-    private useCoin() {
-        this.user.subscribe((result) => {
-            if (result === null) {
+        this.user.subscribe(async (user) => {
+            if (user === null) {
                 this.router.navigate(['/error']);
                 return;
             }
-            const user = result;
             if (user.coinAccounts[0].availableBalance < this.ticketInfo.amount) {
                 this.openAlert({ title: 'エラー', body: 'コインが不足しています' });
                 return;
             }
-            this.store.dispatch(new UseCoin({
-                type: 'ticket',
-                userName: user.userName,
-                coinAccount: user.coinAccounts[0],
-                amount: this.ticketInfo.amount,
-                notes: this.ticketInfo.usedNotes
-            }));
-        }).unsubscribe();
-        const success = this.actions.pipe(
-            ofType(PurchaseActionTypes.UseCoinSuccess),
-            tap(() => {
-                // 成功時の処理
-                this.router.navigate(['/ticket/complete']);
-            })
-        );
-        const fail = this.actions.pipe(
-            ofType(PurchaseActionTypes.UseCoinFail),
-            tap(() => {
-                // エラー時の処理
-                this.router.navigate(['/error']);
+            try {
+                await this.authFido();
+            } catch (error) {
+                this.error.subscribe((error) => {
+                    this.openAlert({ title: 'エラー', body: (error === null) ? '' : error.message });
+                }).unsubscribe();
                 return;
-            })
-        );
-        race(success, fail).pipe(take(1)).subscribe();
+            }
+            try {
+                await this.useCoin(user);
+                this.router.navigate(['/ticket/complete']);
+            } catch (error) {
+                this.router.navigate(['/error']);
+            }
+        }).unsubscribe();
+    }
+
+    private async authFido() {
+        this.store.dispatch(new AuthFido());
+        return new Promise((resolve, reject) => {
+            const success = this.actions.pipe(
+                ofType(FidoActionTypes.AuthFidoSuccess),
+                tap(() => resolve())
+            );
+            const fail = this.actions.pipe(
+                ofType(FidoActionTypes.AuthFidoFail),
+                tap(() => {
+                    this.error.subscribe((error) => {
+                        reject(error);
+                    });
+                })
+            );
+            race(success, fail).pipe(take(1)).subscribe();
+        });
+    }
+
+    private async useCoin(user: User) {
+        this.store.dispatch(new UseCoin({
+            type: 'ticket',
+            userName: user.userName,
+            coinAccount: user.coinAccounts[0],
+            amount: this.ticketInfo.amount,
+            notes: this.ticketInfo.usedNotes
+        }));
+        return new Promise((resolve, reject) => {
+            const success = this.actions.pipe(
+                ofType(PurchaseActionTypes.UseCoinSuccess),
+                tap(() => resolve())
+            );
+            const fail = this.actions.pipe(
+                ofType(PurchaseActionTypes.UseCoinFail),
+                tap(() => {
+                    this.error.subscribe((error) => {
+                        reject(error);
+                    });
+                })
+            );
+            race(success, fail).pipe(take(1)).subscribe();
+        });
     }
 
     private openAlert(args: {
