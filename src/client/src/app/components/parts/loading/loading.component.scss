@@ -1,32 +1,13 @@
 .cover {
-    opacity: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    visibility: visible;
-    animation: fadein 0.4s both;
-    display: none;
-    &.active {
-        display: block;
-        opacity: 1;
-        visibility: visible;
-    }
+    animation: fadein 0.2s both;
 }
 
 .loading {
-    opacity: 0;
-    visibility: hidden;
+    display: flex;
+    opacity: 1;
     align-items: center;
     justify-content: center;
-    &.active {
-        display: flex;
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
-@keyframes loading {
-    30% {
-        transform: scaleY(2);
-    }
 }
 
 .loader,
@@ -43,6 +24,21 @@
     border-left-color: #FFF;
     transform: translateZ(0);
     animation: load8 1.1s infinite linear;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes loading {
+    30% {
+        transform: scaleY(2);
+    }
 }
 
 @keyframes load8 {
